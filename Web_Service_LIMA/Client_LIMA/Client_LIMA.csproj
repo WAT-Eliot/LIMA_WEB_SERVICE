@@ -48,6 +48,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Connected Services\EvacuationShuttleToMx\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -56,9 +61,11 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Connected Services\CollectShuttleToMx\InterfacesPostTapingCollectShuttleToMx01Impl.wsdl" />
+    <None Include="Connected Services\EvacuationShuttleToMx\InterfacesPostTapingEvacuationShuttleToMx01Impl.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\CollectShuttleToMx\" />
+    <WCFMetadataStorage Include="Connected Services\EvacuationShuttleToMx\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\CollectShuttleToMx\configuration91.svcinfo" />
@@ -68,6 +75,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\CollectShuttleToMx\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\EvacuationShuttleToMx\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\EvacuationShuttleToMx\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\EvacuationShuttleToMx\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

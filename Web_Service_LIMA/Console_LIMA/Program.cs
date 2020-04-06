@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Client_LIMA.CollectShuttleToMx;
+using Client_LIMA.EvacuationShuttleToMx;
 using Client_LIMA;
 
 namespace Console_LIMA
@@ -14,13 +15,16 @@ namespace Console_LIMA
         {
             Console.WriteLine("Console_LIMA");
             InterfacesPostTapingCollectShuttleToMx01Client collectClient = new InterfacesPostTapingCollectShuttleToMx01Client();
-            PostTapingCollectShuttleMissionStatusRequest resquestMissionStatus = new PostTapingCollectShuttleMissionStatusRequest
+            InterfacesPostTapingEvacuationShuttleToMx01Client evacuationClient = new InterfacesPostTapingEvacuationShuttleToMx01Client();
+
+            //Collect
+            PostTapingCollectShuttleMissionStatusRequest resquestMissionStatusCollect = new PostTapingCollectShuttleMissionStatusRequest
             {
                 MissionNumber = 123,
                 MissionStatus = PostTapingCollectShuttleMissionStatusType.Ok,
             };
 
-            PostTapingCollectShuttleReportRunningModeRequest resquestReportRunningMode = new PostTapingCollectShuttleReportRunningModeRequest
+            PostTapingCollectShuttleReportRunningModeRequest resquestReportRunningModeCollect = new PostTapingCollectShuttleReportRunningModeRequest
             {
                 DefaultCode = 0,
                 DefaultLabel = "?",
@@ -29,19 +33,43 @@ namespace Console_LIMA
                 RunningModeDateTime = DateTime.Now,
             };
 
-            PostTapingCollectShuttleTapingOutputConveyorRequest requestConveyorNumber = new PostTapingCollectShuttleTapingOutputConveyorRequest
+            PostTapingCollectShuttleTapingOutputConveyorRequest requestConveyorNumberCollect = new PostTapingCollectShuttleTapingOutputConveyorRequest
             {
                 TapingOutputConveyorNumber = 0,
             };
 
-            collectClient.MissionStatus(resquestMissionStatus);
+            //Evacuation
+            PostTapingEvacuationShuttleMissionStatusRequest resquestMissionStatusEvacuation = new PostTapingEvacuationShuttleMissionStatusRequest
+            {
+                MissionNumber = 123,
+                MissionStatus = PostTapingEvacuationShuttleMissionStatusType.Ok,
+            };
+
+            PostTapingEvacuationShuttleReportRunningModeRequest resquestReportRunningModeEvacuation = new PostTapingEvacuationShuttleReportRunningModeRequest
+            {
+                DefaultCode = 0,
+                DefaultLabel = "?",
+                EquipmentCode = 0,
+                RunningMode = PostTapingEvacuationShuttleRunningModeType.Manual,
+                RunningModeDateTime = DateTime.Now,
+            };
+
+            Console.WriteLine("Collect");
+            collectClient.MissionStatus(resquestMissionStatusCollect);
             Console.WriteLine("MissionStatus OK");
 
-            collectClient.ReportRunningMode(resquestReportRunningMode);
+            collectClient.ReportRunningMode(resquestReportRunningModeCollect);
             Console.WriteLine("ReportRunningMode OK");
 
-            collectClient.TapingOutputConveyorNumber(requestConveyorNumber);
+            collectClient.TapingOutputConveyorNumber(requestConveyorNumberCollect);
             Console.WriteLine("ConveyorNumber OK");
+
+            Console.WriteLine("Evacuation");
+            evacuationClient.MissionStatus(resquestMissionStatusEvacuation);
+            Console.WriteLine("MissionStatus OK");
+
+            evacuationClient.ReportRunningMode(resquestReportRunningModeEvacuation);
+            Console.WriteLine("ReportRunningMode OK");
 
             Console.ReadKey();
         }
