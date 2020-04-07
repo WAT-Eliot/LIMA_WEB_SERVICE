@@ -2,7 +2,7 @@
 // Implements the main application class for the DLL.
 
 #include "stdafx.h"
-#include "usrmgrDLL_LimaApp.h"
+#include "usrmgrusrmgrDLL_LimaApp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -37,7 +37,7 @@ END_MESSAGE_MAP()
 ////////////////////////////////////////////////////////////////////////////////
 // CUsrMgrApp construction
 
-CUsrMgrApp::CUsrMgrApp ()
+CUsrMgrApp::CUsrMgrApp()
 {
     // TODO: add construction code here,
     // Place all significant initialization in InitInstance
@@ -51,8 +51,8 @@ CUsrMgrApp theApp;
 ////////////////////////////////////////////////////////////////////////////////
 // CUsrMgrApp initialization
 
-BOOL CUsrMgrApp::InitInstance ()
+BOOL CUsrMgrApp::InitInstance()
 {
-    CWinApp::InitInstance ();
+    CWinApp::InitInstance();
     return TRUE;
 }

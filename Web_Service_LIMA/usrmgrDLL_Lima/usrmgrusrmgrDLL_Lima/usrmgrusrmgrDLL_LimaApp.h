@@ -15,11 +15,11 @@
 class CUsrMgrApp : public CWinApp
 {
 public:
-    CUsrMgrApp ();
+    CUsrMgrApp();
 
 // Overrides
 public:
-    virtual BOOL InitInstance ();
+    virtual BOOL InitInstance();
 
     DECLARE_MESSAGE_MAP()
 };

@@ -17,4 +17,3 @@
 #include <afxtempl.h>       // MFC template classes
 
 #include "svmgrAPI2.h"      // SV Manager Toolkit API
-

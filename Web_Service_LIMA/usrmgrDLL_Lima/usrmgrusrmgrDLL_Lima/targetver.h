@@ -9,12 +9,11 @@
 // Refer to MSDN for the latest info on corresponding values for different platforms.
 
 #ifndef WINVER                  // Specifies that the minimum required platform is Windows XP.
-#define WINVER 0x0A00           // Change this to the appropriate value to target other versions of Windows.
+#define WINVER 0x0501           // Change this to the appropriate value to target other versions of Windows.
 #endif
 
 #ifndef _WIN32_WINNT            // Specifies that the minimum required platform is Windows XP.
-//#define _WIN32_WINNT 0x0501     // Change this to the appropriate value to target other versions of Windows.
-#define _WIN32_WINNT 0x0A00
+#define _WIN32_WINNT 0x0501     // Change this to the appropriate value to target other versions of Windows.
 #endif
 
 #ifndef _WIN32_WINDOWS          // Specifies that the minimum required platform is Windows 98.
