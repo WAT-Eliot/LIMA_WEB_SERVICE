@@ -63,10 +63,16 @@ namespace usrmgrDotNetProject
                                 Variable.vVariableBool[iTailleTab].SetVar(ArrayVarResult[i].varValue.Log);
                             }
                         }
-
                         break;
                     case SvMgrEnums.VarType.svmgr_vtANA:
-
+                        for (int iTailleTab = 0; iTailleTab < Variable.vVariableAna.Length; iTailleTab++)
+                        {
+                            if ((Variable.vVariableAna[iTailleTab].GetAdviseNumber() == ArrayVarResult[i].clientHandle))
+                            {
+                                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, Variable.vVariableAna[iTailleTab].GetVarName() + " = " + ArrayVarResult[i].varValue.Ana);
+                                Variable.vVariableAna[iTailleTab].SetVar(ArrayVarResult[i].varValue.Ana);
+                            }
+                        }
                         break;
                     case SvMgrEnums.VarType.svmgr_vtTXT:
 
