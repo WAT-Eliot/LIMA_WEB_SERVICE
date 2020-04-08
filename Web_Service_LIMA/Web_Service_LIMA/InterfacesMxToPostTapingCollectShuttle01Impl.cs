@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Mx.Broker.Std.Request.Interface.PostTapingCollectShuttle01
+namespace collectns
 {
     using System.Runtime.Serialization;
     
@@ -79,15 +79,63 @@ namespace Mx.Broker.Std.Request.Interface.PostTapingCollectShuttle01
             }
         }
     }
-}
-
-
-[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-[System.ServiceModel.ServiceContractAttribute(ConfigurationName="IInterfacesMxToPostTapingCollectShuttle01")]
-public interface IInterfacesMxToPostTapingCollectShuttle01
-{
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInterfacesMxToPostTapingCollectShuttle01/LayerDestination", ReplyAction="http://tempuri.org/IInterfacesMxToPostTapingCollectShuttle01/LayerDestinationResp" +
-        "onse")]
-    void LayerDestination(Mx.Broker.Std.Request.Interface.PostTapingCollectShuttle01.PostTapingCollectShuttleLayerDestinationRequest request);
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="collectns.IInterfacesMxToPostTapingCollectShuttle01")]
+    public interface IInterfacesMxToPostTapingCollectShuttle01
+    {
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInterfacesMxToPostTapingCollectShuttle01/LayerDestination", ReplyAction="http://tempuri.org/IInterfacesMxToPostTapingCollectShuttle01/LayerDestinationResp" +
+            "onse")]
+        void LayerDestination(collectns.PostTapingCollectShuttleLayerDestinationRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInterfacesMxToPostTapingCollectShuttle01/LayerDestination", ReplyAction="http://tempuri.org/IInterfacesMxToPostTapingCollectShuttle01/LayerDestinationResp" +
+            "onse")]
+        System.Threading.Tasks.Task LayerDestinationAsync(collectns.PostTapingCollectShuttleLayerDestinationRequest request);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IInterfacesMxToPostTapingCollectShuttle01Channel : collectns.IInterfacesMxToPostTapingCollectShuttle01, System.ServiceModel.IClientChannel
+    {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class InterfacesMxToPostTapingCollectShuttle01Client : System.ServiceModel.ClientBase<collectns.IInterfacesMxToPostTapingCollectShuttle01>, collectns.IInterfacesMxToPostTapingCollectShuttle01
+    {
+        
+        public InterfacesMxToPostTapingCollectShuttle01Client()
+        {
+        }
+        
+        public InterfacesMxToPostTapingCollectShuttle01Client(string endpointConfigurationName) : 
+                base(endpointConfigurationName)
+        {
+        }
+        
+        public InterfacesMxToPostTapingCollectShuttle01Client(string endpointConfigurationName, string remoteAddress) : 
+                base(endpointConfigurationName, remoteAddress)
+        {
+        }
+        
+        public InterfacesMxToPostTapingCollectShuttle01Client(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(endpointConfigurationName, remoteAddress)
+        {
+        }
+        
+        public InterfacesMxToPostTapingCollectShuttle01Client(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(binding, remoteAddress)
+        {
+        }
+        
+        public void LayerDestination(collectns.PostTapingCollectShuttleLayerDestinationRequest request)
+        {
+            base.Channel.LayerDestination(request);
+        }
+        
+        public System.Threading.Tasks.Task LayerDestinationAsync(collectns.PostTapingCollectShuttleLayerDestinationRequest request)
+        {
+            return base.Channel.LayerDestinationAsync(request);
+        }
+    }
 }
