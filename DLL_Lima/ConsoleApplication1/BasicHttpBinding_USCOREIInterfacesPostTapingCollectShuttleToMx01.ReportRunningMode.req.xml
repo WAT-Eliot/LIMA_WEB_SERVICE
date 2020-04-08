@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SOAP-ENV:Envelope
-    xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope"
-    xmlns:SOAP-ENC="http://www.w3.org/2003/05/soap-encoding"
+    xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:ns2="http://schemas.microsoft.com/2003/10/Serialization/"
@@ -15,7 +15,7 @@
      <ns3:DefaultLabel></ns3:DefaultLabel>
      <ns3:EquipmentCode>0</ns3:EquipmentCode>
      <ns3:RunningMode>Manual</ns3:RunningMode>
-     <ns3:RunningModeDateTime>2020-04-08T09:18:32Z</ns3:RunningModeDateTime>
+     <ns3:RunningModeDateTime>2020-04-08T10:04:41Z</ns3:RunningModeDateTime>
     </ns1:request>
    </ns1:ReportRunningMode>
  </SOAP-ENV:Body>
