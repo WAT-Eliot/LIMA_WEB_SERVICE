@@ -22,6 +22,8 @@ namespace Web_Service_LIMA
         }
 
         /*
+        [OperationContract(Name = "LayerDestinationAsync")]
+
         public Task LayerDestinationAsync(PostTapingCollectShuttleLayerDestinationRequest request)
         {
             throw new NotImplementedException();
