@@ -11,11 +11,25 @@ namespace usrmgrDotNetProject
         public Main()
         {
             SvMgrAPI.StartProject += SvMgrAPI_StartProject;
+            SvMgrAPI.OnDataChange2 += SvMgrAPI_OnDataChange2;
         }
 
         private void SvMgrAPI_StartProject()
         {
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "DLL démarrée");
+            if (SvMgrAPI.VarAdvise("Mx.Test", 0))
+            {
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Variable déclarée");
+            }
+            else
+            {
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Warning, "Variable non déclarée");
+            }
+        }
+
+        private void SvMgrAPI_OnDataChange2(SvMgrObjects.VariableResult[] ArrayVarResult)
+        {
+            throw new NotImplementedException();
         }
 
         public void Dispose()
