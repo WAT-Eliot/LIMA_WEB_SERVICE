@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope
+    xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope"
+    xmlns:SOAP-ENC="http://www.w3.org/2003/05/soap-encoding"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:ns2="http://schemas.microsoft.com/2003/10/Serialization/"
+    xmlns:ns3="http://schemas.datacontract.org/2004/07/Mx.Broker.Std.Request.Interface.PostTapingCollectShuttle01"
+    xmlns:ns1="http://tempuri.org/">
+ <SOAP-ENV:Body>
+   <ns1:ReportRunningMode>
+    <ns1:request>
+     <!-- extensibility element(s) -->
+     <ns3:DefaultCode>0</ns3:DefaultCode>
+     <ns3:DefaultLabel></ns3:DefaultLabel>
+     <ns3:EquipmentCode>0</ns3:EquipmentCode>
+     <ns3:RunningMode>Manual</ns3:RunningMode>
+     <ns3:RunningModeDateTime>2020-04-08T07:57:03Z</ns3:RunningModeDateTime>
+    </ns1:request>
+   </ns1:ReportRunningMode>
+ </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
