@@ -75,7 +75,14 @@ namespace usrmgrDotNetProject
                         }
                         break;
                     case SvMgrEnums.VarType.svmgr_vtTXT:
-
+                        for (int iTailleTab = 0; iTailleTab < Variable.vVariableString.Length; iTailleTab++)
+                        {
+                            if ((Variable.vVariableString[iTailleTab].GetAdviseNumber() == ArrayVarResult[i].clientHandle))
+                            {
+                                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, Variable.vVariableString[iTailleTab].GetVarName() + " = " + ArrayVarResult[i].varValue.Txt);
+                                Variable.vVariableString[iTailleTab].SetVar(ArrayVarResult[i].varValue.Txt);
+                            }
+                        }
                         break;
                 }
             }
