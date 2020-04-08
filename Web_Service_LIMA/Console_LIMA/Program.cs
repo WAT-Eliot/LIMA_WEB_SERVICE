@@ -7,13 +7,22 @@ using Client_LIMA.CollectShuttleToMx;
 using Client_LIMA.EvacuationShuttleToMx;
 using Client_LIMA;
 
+//Logger
+using log4net;
+using log4net.Config;
+using System.IO;
+using log4net.Repository.Hierarchy;
+
+
 namespace Console_LIMA
 {
     class Program
     {
+        private static ILog log = LogManager.GetLogger("Console"); //Start logger
         static void Main(string[] args)
         {
             Console.WriteLine("Console_LIMA");
+            log.Info("start"); //Log
             InterfacesPostTapingCollectShuttleToMx01Client collectClient = new InterfacesPostTapingCollectShuttleToMx01Client();
             InterfacesPostTapingEvacuationShuttleToMx01Client evacuationClient = new InterfacesPostTapingEvacuationShuttleToMx01Client();
 

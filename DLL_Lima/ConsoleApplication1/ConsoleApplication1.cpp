@@ -25,14 +25,37 @@ int main()
 	BasicHttpBinding_USCOREIInterfacesPostTapingCollectShuttleToMx01Proxy client(SOAP_XML_INDENT);
 
 	iVal = client.MissionStatus(MissionStatus, MissionStatusResponse);
-	//struct soap * soap = soap_new();
-	//iVal = soap. = "soap/XML";
 
 	if (iVal == SOAP_OK) {
 		std::cout << "Mission Status OK\n";
 	}
 	else {
 		std::cout << "Mission Status NOK\n";
+		client.soap_stream_fault(std::cerr);
+	}
+
+
+	//////////////////// Report Running Mode ////////////////
+
+	ns3__PostTapingCollectShuttleReportRunningModeRequest ReportRunningModeResquest = ns3__PostTapingCollectShuttleReportRunningModeRequest();
+	ReportRunningModeResquest.DefaultCode = new int(404);
+	ReportRunningModeResquest.DefaultLabel = new std::string("Test");
+	ReportRunningModeResquest.EquipmentCode = new int(5555);
+	ReportRunningModeResquest.RunningMode = new ns3__PostTapingCollectShuttleRunningModeType(ns3__PostTapingCollectShuttleRunningModeType__Manual);
+	ReportRunningModeResquest.RunningModeDateTime = new time_t(time(NULL));
+
+	_ns1__ReportRunningMode *ReportRunningMode = new _ns1__ReportRunningMode();
+	ReportRunningMode->request = new ns3__PostTapingCollectShuttleReportRunningModeRequest(ReportRunningModeResquest);
+	_ns1__ReportRunningModeResponse ReportRunningModeResponse = _ns1__ReportRunningModeResponse();
+
+	iVal = client.ReportRunningMode(ReportRunningMode, ReportRunningModeResponse);
+
+
+	if (iVal == SOAP_OK) {
+		std::cout << "Report Running Mode OK\n";
+	}
+	else {
+		std::cout << "Report Running Mode NOK\n";
 		client.soap_stream_fault(std::cerr);
 	}
 
