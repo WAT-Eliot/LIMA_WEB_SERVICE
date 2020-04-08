@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SvMgrObjects;
 
 namespace usrmgrDotNetProject
 {
@@ -12,7 +13,11 @@ namespace usrmgrDotNetProject
         protected string m_name;
         protected uint m_adviseN;
 
-        public void Main(string name, uint adviseN)
+        public Variable()
+        {
+        }
+
+        public Variable(string name, uint adviseN)
         {
             m_name = name;
             m_adviseN = adviseN;
@@ -49,9 +54,13 @@ namespace usrmgrDotNetProject
     class TypeBool : Variable
     {
 
-        private SvMgrObjects.VarValue m_value;
+        private bool m_value;
 
-        public void Main(string name, uint adviseN, SvMgrObjects.VarValue value)
+        public TypeBool()
+        {
+        }
+
+        public TypeBool(string name, uint adviseN, bool value)
         {
             m_name = name;
             m_adviseN = adviseN;
@@ -60,26 +69,27 @@ namespace usrmgrDotNetProject
             if(adviseN != 0)
             {
                 this.Advise();
+                 
                 //Ajout vecteur pour comptage
             }
         }
 
-        public void SetVar(SvMgrObjects.VarValue value)
+        public void SetVar(bool value)
         {
-        m_value = value;
+            m_value = value;
             
         }
 
-        public SvMgrObjects.VarValue GetVarValue()
+        public bool GetVarValue()
         {
             return m_value;
         }
 
         public virtual void WriteVar(SvMgrObjects.VarValue value)
         {
-            if (value != m_value)
+            if (value.Log != m_value)
             {
-                SvMgrAPI.VarWrite(m_name, value, 0); 
+                SvMgrAPI.VarWrite(m_name, value, 0);
             }
         }
     }

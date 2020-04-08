@@ -17,7 +17,11 @@ namespace usrmgrDotNetProject
         private void SvMgrAPI_StartProject()
         {
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "DLL démarrée");
-            if (SvMgrAPI.VarAdvise("Mx.Test", 0))
+
+            TypeBool Test = new TypeBool("Mx.Test", 0, false);
+
+
+            if (SvMgrAPI.VarAdvise("Mx.Test1", 0))
             {
                 SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Variable déclarée");
             }
