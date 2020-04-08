@@ -21,9 +21,11 @@ namespace Web_Service_LIMA
             log.Info(request.MissionNumber + " " + request.SorterInputConveyorNumber + " " + request.TapingOutputConveyorNumber);
         }
 
+        /*
         public Task LayerDestinationAsync(PostTapingCollectShuttleLayerDestinationRequest request)
         {
             throw new NotImplementedException();
         }
+        */
     }
 }
