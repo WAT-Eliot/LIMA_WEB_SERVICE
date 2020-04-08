@@ -9,7 +9,9 @@ namespace usrmgrDotNetProject
 {
     class Variable
     {
-    
+        public static TypeBool[] vVariableBool = new TypeBool[2];
+        public static TypeAna[] vVariableAna = new TypeAna[2];
+        public static TypeString[] vVariableString = new TypeString[2];
         protected string m_name;
         protected uint m_adviseN;
 
@@ -45,6 +47,11 @@ namespace usrmgrDotNetProject
             SvMgrAPI.VarUnadvise(m_name, m_adviseN);
         }
 
+        public uint GetAdviseNumber()
+        {
+            return m_adviseN;
+        }
+
         public virtual void WriteVar()
         {
 
@@ -53,7 +60,7 @@ namespace usrmgrDotNetProject
 
     class TypeBool : Variable
     {
-
+        
         private bool m_value;
 
         public TypeBool()
@@ -69,9 +76,9 @@ namespace usrmgrDotNetProject
             if(adviseN != 0)
             {
                 this.Advise();
-                 
-                //Ajout vecteur pour comptage
+               
             }
+            
         }
 
         public void SetVar(bool value)

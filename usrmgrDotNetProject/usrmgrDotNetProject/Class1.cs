@@ -8,6 +8,8 @@ namespace usrmgrDotNetProject
 {
     public class Main:IDisposable 
     {
+
+        
         public Main()
         {
             SvMgrAPI.StartProject += SvMgrAPI_StartProject;
@@ -18,37 +20,65 @@ namespace usrmgrDotNetProject
         {
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "DLL démarrée");
 
+            /*----------------------------- Déclaration des variables ----------------------------------------*/
+            
+            // Variable bool
             TypeBool Test = new TypeBool("Mx.Test", 1, false);
+            Variable.vVariableBool[0] = Test;
             TypeBool Test1 = new TypeBool("Mx.Test1", 2, false);
-            TypeAna Ana = new TypeAna("Mx.Ana", 3, 0);
-            TypeAna Ana1 = new TypeAna("Mx.Ana1", 4, 0);
-            TypeString Txt = new TypeString("Mx.Txt", 5, "");
-            TypeString Txt1 = new TypeString("Mx.Txt1", 6, "");
+            Variable.vVariableBool[1] = Test1;
 
-            /*
-            if (SvMgrAPI.VarAdvise("Mx.Test1", 2))
-            {
-                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Variable déclarée");
-            }
-            else
-            {
-                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Warning, "Variable non déclarée");
-            }
-            */
+            //Variable Ana
+            TypeAna Ana = new TypeAna("Mx.Ana", 3, 0);
+            Variable.vVariableAna[0] = Ana;
+            TypeAna Ana1 = new TypeAna("Mx.Ana1", 4, 0);
+            Variable.vVariableAna[1] = Ana1;
+
+            //Variable String
+            TypeString Txt = new TypeString("Mx.Txt", 5, "");
+            Variable.vVariableString[0] = Txt;
+            TypeString Txt1 = new TypeString("Mx.Txt1", 6, "");
+            Variable.vVariableString[1] = Txt1;
+
+            /*----------------------------- Fin Déclaration des variables ----------------------------------------*/
         }
 
         private void SvMgrAPI_OnDataChange2(SvMgrObjects.VariableResult[] ArrayVarResult)
         {
+            
+            for (int i = 0; i < ArrayVarResult.Length; i++) {
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Variable modifiée : " + ArrayVarResult[i].clientHandle);
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Type de la Variable modifiée : " + ArrayVarResult[i].varValue.vt);
 
-            uint iVal = ArrayVarResult[0].clientHandle;
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Variable modifiée : " + iVal);
+                switch (ArrayVarResult[i].varValue.vt)
+                {
+                    case SvMgrEnums.VarType.svmgr_vtNONE:
 
-            //throw new NotImplementedException();
+                    case SvMgrEnums.VarType.svmgr_vtLOG:
+                        for (int iTailleTab = 0; iTailleTab < Variable.vVariableBool.Length; iTailleTab++)
+                        {
+                            if((Variable.vVariableBool[iTailleTab].GetAdviseNumber() == ArrayVarResult[i].clientHandle))
+                            {
+                                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, Variable.vVariableBool[iTailleTab].GetVarName() + " = " + ArrayVarResult[i].varValue.Log);
+                                Variable.vVariableBool[iTailleTab].SetVar(ArrayVarResult[i].varValue.Log);
+                            }
+                        }
+
+                        break;
+                    case SvMgrEnums.VarType.svmgr_vtANA:
+
+                        break;
+                    case SvMgrEnums.VarType.svmgr_vtTXT:
+
+                        break;
+                }
+            }
         }
 
         public void Dispose()
         {
             
         }
+
     }
 }
