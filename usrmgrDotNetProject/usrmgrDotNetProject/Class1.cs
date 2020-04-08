@@ -19,6 +19,7 @@ namespace usrmgrDotNetProject
         private void SvMgrAPI_StartProject()
         {
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "DLL démarrée");
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 1111");
 
             /*----------------------------- Déclaration des variables ----------------------------------------*/
             
