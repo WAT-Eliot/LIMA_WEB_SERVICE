@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by usrmgrusrmgrDLL_Lima.rc
+// Used by usrmgrDLL_Lima.rc
 //
 
 // Next default values for new objects

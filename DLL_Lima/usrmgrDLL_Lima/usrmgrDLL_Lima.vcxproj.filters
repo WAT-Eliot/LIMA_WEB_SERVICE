@@ -21,18 +21,30 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="usrmgrusrmgrDLL_LimaApp.cpp">
+    <ClCompile Include="usrmgrDLL_LimaApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="usrmgrusrmgrDLL_LimaImpl.cpp">
+    <ClCompile Include="usrmgrDLL_LimaImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="my_logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="my_structs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Equipement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sequence.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="usrmgrusrmgrDLL_Lima.def">
+    <None Include="usrmgrDLL_Lima.def">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="usrmgrusrmgrDLL_Lima.rc2">
+    <None Include="usrmgrDLL_Lima.rc2">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
@@ -46,15 +58,27 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="usrmgrusrmgrDLL_LimaApp.h">
+    <ClInclude Include="usrmgrDLL_LimaApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="usrmgrusrmgrDLL_LimaImpl.h">
+    <ClInclude Include="usrmgrDLL_LimaImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="my_logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="my_structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Equipement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sequence.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="usrmgrusrmgrDLL_Lima.rc">
+    <ResourceCompile Include="usrmgrDLL_Lima.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

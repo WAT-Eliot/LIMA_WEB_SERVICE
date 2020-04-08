@@ -2,7 +2,7 @@
 // Implements the main application class for the DLL.
 
 #include "stdafx.h"
-#include "usrmgrusrmgrDLL_LimaApp.h"
+#include "usrmgrDLL_LimaApp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
