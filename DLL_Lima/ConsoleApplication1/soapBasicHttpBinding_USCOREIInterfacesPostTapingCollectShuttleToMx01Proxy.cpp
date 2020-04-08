@@ -179,6 +179,7 @@ int BasicHttpBinding_USCOREIInterfacesPostTapingCollectShuttleToMx01Proxy::send_
 		soap_action = "http://tempuri.org/IInterfacesPostTapingCollectShuttleToMx01/TapingOutputConveyorNumber";
 	soap_tmp___ns1__TapingOutputConveyorNumber.ns1__TapingOutputConveyorNumber = ns1__TapingOutputConveyorNumber;
 	soap_begin(soap);
+	soap_set_version(soap, 2); /* use SOAP1.2 */
 	soap->encodingStyle = NULL; /* use SOAP literal style */
 	soap_serializeheader(soap);
 	soap_serialize___ns1__TapingOutputConveyorNumber(soap, &soap_tmp___ns1__TapingOutputConveyorNumber);
@@ -236,6 +237,7 @@ int BasicHttpBinding_USCOREIInterfacesPostTapingCollectShuttleToMx01Proxy::send_
 		soap_action = "http://tempuri.org/IInterfacesPostTapingCollectShuttleToMx01/MissionStatus";
 	soap_tmp___ns1__MissionStatus.ns1__MissionStatus = ns1__MissionStatus;
 	soap_begin(soap);
+	soap_set_version(soap, 2); /* use SOAP1.2 */
 	soap->encodingStyle = NULL; /* use SOAP literal style */
 	soap_serializeheader(soap);
 	soap_serialize___ns1__MissionStatus(soap, &soap_tmp___ns1__MissionStatus);
@@ -293,6 +295,7 @@ int BasicHttpBinding_USCOREIInterfacesPostTapingCollectShuttleToMx01Proxy::send_
 		soap_action = "http://tempuri.org/IInterfacesPostTapingCollectShuttleToMx01/ReportRunningMode";
 	soap_tmp___ns1__ReportRunningMode.ns1__ReportRunningMode = ns1__ReportRunningMode;
 	soap_begin(soap);
+	soap_set_version(soap, 2); /* use SOAP1.2 */
 	soap->encodingStyle = NULL; /* use SOAP literal style */
 	soap_serializeheader(soap);
 	soap_serialize___ns1__ReportRunningMode(soap, &soap_tmp___ns1__ReportRunningMode);
