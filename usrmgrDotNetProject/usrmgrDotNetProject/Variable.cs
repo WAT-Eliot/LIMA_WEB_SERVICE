@@ -32,7 +32,7 @@ namespace usrmgrDotNetProject
         {
             if (SvMgrAPI.VarAdvise(m_name, m_adviseN))
             {
-                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Variable" + m_name + " (" + m_adviseN + ") abonnée.");
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Variable " + m_name + " (n° " + m_adviseN + ") abonnée.");
             }
             else
             {
@@ -88,6 +88,92 @@ namespace usrmgrDotNetProject
         public virtual void WriteVar(SvMgrObjects.VarValue value)
         {
             if (value.Log != m_value)
+            {
+                SvMgrAPI.VarWrite(m_name, value, 0);
+            }
+        }
+    }
+
+    class TypeAna : Variable
+    {
+
+        private double m_value;
+
+        public TypeAna()
+        {
+        }
+
+        public TypeAna(string name, uint adviseN, double value)
+        {
+            m_name = name;
+            m_adviseN = adviseN;
+            m_value = value;
+
+            if (adviseN != 0)
+            {
+                this.Advise();
+
+                //Ajout vecteur pour comptage
+            }
+        }
+
+        public void SetVar(double value)
+        {
+            m_value = value;
+
+        }
+
+        public double GetVarValue()
+        {
+            return m_value;
+        }
+
+        public virtual void WriteVar(SvMgrObjects.VarValue value)
+        {
+            if (value.Ana != m_value)
+            {
+                SvMgrAPI.VarWrite(m_name, value, 0);
+            }
+        }
+    }
+
+    class TypeString : Variable
+    {
+
+        private string m_value;
+
+        public TypeString()
+        {
+        }
+
+        public TypeString(string name, uint adviseN, string value)
+        {
+            m_name = name;
+            m_adviseN = adviseN;
+            m_value = value;
+
+            if (adviseN != 0)
+            {
+                this.Advise();
+
+                //Ajout vecteur pour comptage
+            }
+        }
+
+        public void SetVar(string value)
+        {
+            m_value = value;
+
+        }
+
+        public string GetVarValue()
+        {
+            return m_value;
+        }
+
+        public virtual void WriteVar(SvMgrObjects.VarValue value)
+        {
+            if (value.Txt != m_value)
             {
                 SvMgrAPI.VarWrite(m_name, value, 0);
             }
