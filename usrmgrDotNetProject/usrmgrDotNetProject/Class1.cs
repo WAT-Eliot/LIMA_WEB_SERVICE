@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Client_Lima.CollectShuttleToMx;
+using Client_Lima.EvacuationShuttleToMx;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -121,6 +123,66 @@ namespace usrmgrDotNetProject
                     return;
                 }
             }
+        }
+
+        private void Client_Lima()
+        {
+            InterfacesPostTapingCollectShuttleToMx01Client collectClient = new InterfacesPostTapingCollectShuttleToMx01Client();
+            InterfacesPostTapingEvacuationShuttleToMx01Client evacuationClient = new InterfacesPostTapingEvacuationShuttleToMx01Client();
+
+            //Collect
+            PostTapingCollectShuttleMissionStatusRequest resquestMissionStatusCollect = new PostTapingCollectShuttleMissionStatusRequest
+            {
+                MissionNumber = 0,
+                MissionStatus = PostTapingCollectShuttleMissionStatusType.Ok,
+            };
+
+            PostTapingCollectShuttleReportRunningModeRequest resquestReportRunningModeCollect = new PostTapingCollectShuttleReportRunningModeRequest
+            {
+                DefaultCode = 0,
+                DefaultLabel = "?",
+                EquipmentCode = 0,
+                RunningMode = PostTapingCollectShuttleRunningModeType.Manual,
+                RunningModeDateTime = DateTime.Now,
+            };
+
+            PostTapingCollectShuttleTapingOutputConveyorRequest requestConveyorNumberCollect = new PostTapingCollectShuttleTapingOutputConveyorRequest
+            {
+                TapingOutputConveyorNumber = 0,
+            };
+
+            //Evacuation
+            PostTapingEvacuationShuttleMissionStatusRequest resquestMissionStatusEvacuation = new PostTapingEvacuationShuttleMissionStatusRequest
+            {
+                MissionNumber = 0,
+                MissionStatus = PostTapingEvacuationShuttleMissionStatusType.Ok,
+            };
+
+            PostTapingEvacuationShuttleReportRunningModeRequest resquestReportRunningModeEvacuation = new PostTapingEvacuationShuttleReportRunningModeRequest
+            {
+                DefaultCode = 0,
+                DefaultLabel = "?",
+                EquipmentCode = 0,
+                RunningMode = PostTapingEvacuationShuttleRunningModeType.Manual,
+                RunningModeDateTime = DateTime.Now,
+            };
+
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collect");
+            collectClient.MissionStatus(resquestMissionStatusCollect);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "MissionStatus OK");
+
+            collectClient.ReportRunningMode(resquestReportRunningModeCollect);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "ReportRunningMode OK");
+
+            collectClient.TapingOutputConveyorNumber(requestConveyorNumberCollect);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "ConveyorNumber OK");
+
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Evacuation");
+            evacuationClient.MissionStatus(resquestMissionStatusEvacuation);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "MissionStatus OK");
+
+            evacuationClient.ReportRunningMode(resquestReportRunningModeEvacuation);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "ReportRunningMode OK");
         }
 
         public void Dispose()
