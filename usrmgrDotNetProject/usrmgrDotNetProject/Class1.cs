@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
+
 
 namespace usrmgrDotNetProject
 {
@@ -13,13 +14,16 @@ namespace usrmgrDotNetProject
         public Main()
         {
             SvMgrAPI.StartProject += SvMgrAPI_StartProject;
+            //SvMgrAPI.StartProject += SvMgrAPI_Boucle;
             SvMgrAPI.OnDataChange2 += SvMgrAPI_OnDataChange2;
         }
+
+
 
         private void SvMgrAPI_StartProject()
         {
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "DLL démarrée");
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 1111");
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 09/04/2020 10H00");
 
             /*----------------------------- Déclaration des variables ----------------------------------------*/
             
@@ -48,13 +52,11 @@ namespace usrmgrDotNetProject
         {
             
             for (int i = 0; i < ArrayVarResult.Length; i++) {
-                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Variable modifiée : " + ArrayVarResult[i].clientHandle);
-                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Type de la Variable modifiée : " + ArrayVarResult[i].varValue.vt);
+                //SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Variable modifiée : " + ArrayVarResult[i].clientHandle);
+                //SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Type de la Variable modifiée : " + ArrayVarResult[i].varValue.vt);
 
                 switch (ArrayVarResult[i].varValue.vt)
                 {
-                    case SvMgrEnums.VarType.svmgr_vtNONE:
-
                     case SvMgrEnums.VarType.svmgr_vtLOG:
                         for (int iTailleTab = 0; iTailleTab < Variable.vVariableBool.Length; iTailleTab++)
                         {
@@ -85,6 +87,38 @@ namespace usrmgrDotNetProject
                             }
                         }
                         break;
+                }
+            }
+
+            //Action 
+
+            if (Variable.vVariableBool[0].GetVarValue())
+            {
+                Variable.vVariableString[1].WriteVar("Coucou");
+            }
+
+            Variable.vVariableBool[1].WriteVar(!Variable.vVariableBool[0].GetVarValue());
+
+        }
+
+        private void SvMgrAPI_Boucle()
+        {
+            for (;;)
+            {
+                try
+                {
+                    if (Variable.vVariableBool[0].GetVarValue())
+                    {
+                        Variable.vVariableAna[1].WriteVar(666);
+                    }
+
+
+                    Thread.Sleep(1000);
+
+                }
+                catch (Exception e)
+                {
+                    return;
                 }
             }
         }

@@ -92,11 +92,15 @@ namespace usrmgrDotNetProject
             return m_value;
         }
 
-        public virtual void WriteVar(SvMgrObjects.VarValue value)
+        public virtual void WriteVar(bool value)
         {
-            if (value.Log != m_value)
+            SvMgrObjects.VarValue varValue = new SvMgrObjects.VarValue();
+            varValue.vt = SvMgrEnums.VarType.svmgr_vtLOG;
+            varValue.Log = value;
+
+            if (varValue.Log != m_value)
             {
-                SvMgrAPI.VarWrite(m_name, value, 0);
+                SvMgrAPI.VarWrite(m_name, varValue, 0);
             }
         }
     }
@@ -135,11 +139,16 @@ namespace usrmgrDotNetProject
             return m_value;
         }
 
-        public virtual void WriteVar(SvMgrObjects.VarValue value)
+        public virtual void WriteVar(double value)
         {
-            if (value.Ana != m_value)
+            SvMgrObjects.VarValue varValue = new SvMgrObjects.VarValue();
+            varValue.vt = SvMgrEnums.VarType.svmgr_vtANA;
+            varValue.Ana = value;
+
+
+            if (varValue.Ana != m_value)
             {
-                SvMgrAPI.VarWrite(m_name, value, 0);
+                SvMgrAPI.VarWrite(m_name, varValue, 0);
             }
         }
     }
@@ -178,11 +187,15 @@ namespace usrmgrDotNetProject
             return m_value;
         }
 
-        public virtual void WriteVar(SvMgrObjects.VarValue value)
+        public virtual void WriteVar(string value)
         {
-            if (value.Txt != m_value)
+            SvMgrObjects.VarValue varValue = new SvMgrObjects.VarValue();
+            varValue.vt = SvMgrEnums.VarType.svmgr_vtTXT;
+            varValue.Txt = value;
+
+            if (varValue.Txt != m_value)
             {
-                SvMgrAPI.VarWrite(m_name, value, 0);
+                SvMgrAPI.VarWrite(m_name, varValue, 0);
             }
         }
     }
