@@ -27,6 +27,9 @@ namespace usrmgrDotNetProject
         private string tempPrefixeEvacuation = tempPrefixeMx + ".NavetteEvacuation";
 
 
+        Variable.sNavetteCollecte NavetteCollecte = new Variable.sNavetteCollecte();
+        Variable.sNavetteEvacuation NavetteEvacuation = new Variable.sNavetteEvacuation();
+
         public Main()
         {
             SvMgrAPI.StartProject += SvMgrAPI_StartProject;
@@ -40,93 +43,99 @@ namespace usrmgrDotNetProject
         private void SvMgrAPI_StartProject()
         {
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "DLL démarrée");
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 09/04/2020 13H00");
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 09/04/2020 16H00");
 
             /*----------------------------- Déclaration des variables ----------------------------------------*/
 
             /*------------------------ Navette Collecte -----------------------------------------------------*/
-
+            
             CollecteEchange1(0);
             CollecteEchange2(20);
             CollecteEchange3(40);
             CollecteEchange4(60);
 
             /*------------------------ Navette Evacuation -----------------------------------------------------*/
-
+            
             EvacuationEchange1(100);
             EvacuationEchange2(120);
-            EvacuationEchange3(1400);
+            EvacuationEchange3(140);
 
             /*----------------------------- Fin Déclaration des variables ----------------------------------------*/
 
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Il y a : " + Variable.vVariableBool.Count() + " bools, " + Variable.vVariableAna.Count() + " valeurs ana, " + Variable.vVariableString.Count() + " chaines de caractere.");
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Il y a : " + (Variable.vVariableBool.Count() + Variable.vVariableAna.Count() + Variable.vVariableString.Count()) + " variables dont " + Variable.vVariableBool.Count() + " booleans, " + Variable.vVariableAna.Count() + " valeurs ana, " + Variable.vVariableString.Count() + " chaines de caractere.");
         }
 
-        private void CollecteEchange1(uint nbr)
+        public void CollecteEchange1(uint nbr)
         {
+            // TapingOutputConveyorNumber
             string tempPrefixe = tempPrefixeCollecte + ".Echange1";
+            NavetteCollecte.TapingOutputConveyorNumber.SendCom = new TypeBool(tempPrefixe + ".SendCom", nbr + 1, false);
+            NavetteCollecte.TapingOutputConveyorNumber.TapingOutputConveyorNumber = new TypeAna(tempPrefixe + ".TapingOutputConveyorNumber", nbr + 2, 0);
 
-            TypeBool SendCom = new TypeBool(tempPrefixe + ".SendCom", nbr + 1, false);
-            TypeAna TapingOutputConveyorNumber = new TypeAna(tempPrefixe + ".TapingOutputConveyorNumber", nbr + 2, 0);
         }
 
         private void CollecteEchange2(uint nbr)
         {
+            // LayerDestionation
             string tempPrefixe = tempPrefixeCollecte + ".Echange2";
-            TypeBool ReceiveCom = new TypeBool(tempPrefixe + ".ReceiveCom", nbr + 1, false);
-            TypeAna MissionNumber = new TypeAna(tempPrefixe + ".MissionNumber", nbr + 2, 0);
-            TypeAna SorterInputConveyorNumber = new TypeAna(tempPrefixe + ".SorterInputConveyorNumber", nbr + 3, 0);
-            TypeAna TapingOutputConveyor = new TypeAna(tempPrefixe + ".TapingOutputConveyor", nbr + 4, 0);
+            NavetteCollecte.LayerDestination.ReceiveCom = new TypeBool(tempPrefixe + ".ReceiveCom", nbr + 1, false);
+            NavetteCollecte.LayerDestination.MissionNumber = new TypeAna(tempPrefixe + ".MissionNumber", nbr + 2, 0);
+            NavetteCollecte.LayerDestination.SorterInputConveyorNumber = new TypeAna(tempPrefixe + ".SorterInputConveyorNumber", nbr + 3, 0);
+            NavetteCollecte.LayerDestination.TapingOutputConveyorNumber = new TypeAna(tempPrefixe + ".TapingOutputConveyor", nbr + 4, 0);
         }
 
         private void CollecteEchange3(uint nbr)
         {
+            // MissionStatus
             string tempPrefixe = tempPrefixeCollecte + ".Echange3";
-            TypeBool SendCom = new TypeBool(tempPrefixe + ".SendCom", nbr + 1, false);
-            TypeBool MissionStatus = new TypeBool(tempPrefixe + ".MissionStatus", nbr + 2, false);
-            TypeAna MissionNumber = new TypeAna(tempPrefixe + ".MissionNumber", nbr + 3, 0);
+            NavetteCollecte.MissionStatus.SendCom = new TypeBool(tempPrefixe + ".SendCom", nbr + 1, false);
+            NavetteCollecte.MissionStatus.MissionStatus = new TypeBool(tempPrefixe + ".MissionStatus", nbr + 2, false);
+            NavetteCollecte.MissionStatus.MissionNumber = new TypeAna(tempPrefixe + ".MissionNumber", nbr + 3, 0);
         }
 
         private void CollecteEchange4(uint nbr)
         {
+            // ReportRunningMode
             string tempPrefixe = tempPrefixeCollecte + ".Echange4";
-            TypeBool SendCom = new TypeBool(tempPrefixe + ".SendCom", nbr + 1, false);
-            TypeAna DefaultCode = new TypeAna(tempPrefixe + ".DefaultCode", nbr + 2, 0);
-            TypeAna EquipmentCode = new TypeAna(tempPrefixe + ".EquipmentCode", nbr + 3, 0);
-            TypeAna RunningMode = new TypeAna(tempPrefixe + ".RunningMode", nbr + 4, 0);
-            TypeString DefaultLabel = new TypeString(tempPrefixe + ".DefaultLabel", nbr + 5, "");
-            TypeString RunningModeDate = new TypeString(tempPrefixe + ".RunningModeDate", nbr + 6, "");
-            TypeString RunningModeTime = new TypeString(tempPrefixe + ".RunningModeTime", nbr + 7, "");
+            NavetteCollecte.ReportRunningMode.SendCom = new TypeBool(tempPrefixe + ".SendCom", nbr + 1, false);
+            NavetteCollecte.ReportRunningMode.DefaultCode = new TypeAna(tempPrefixe + ".DefaultCode", nbr + 2, 0);
+            NavetteCollecte.ReportRunningMode.EquipmentCode = new TypeAna(tempPrefixe + ".EquipmentCode", nbr + 3, 0);
+            NavetteCollecte.ReportRunningMode.RunningMode = new TypeAna(tempPrefixe + ".RunningMode", nbr + 4, 0);
+            NavetteCollecte.ReportRunningMode.DefaultLabel = new TypeString(tempPrefixe + ".DefaultLabel", nbr + 5, "");
+            NavetteCollecte.ReportRunningMode.RunningModeDate = new TypeString(tempPrefixe + ".RunningModeDate", nbr + 6, "");
+            NavetteCollecte.ReportRunningMode.RunningModeTime = new TypeString(tempPrefixe + ".RunningModeTime", nbr + 7, "");
         }
 
         private void EvacuationEchange1(uint nbr)
         {
+            // LayerDestionation
             string tempPrefixe = tempPrefixeEvacuation + ".Echange1";
-
-            TypeBool ReceiveCom = new TypeBool(tempPrefixe + ".ReceiveCom", nbr + 1, false);
-            TypeAna LayerDestination = new TypeAna(tempPrefixe + ".LayerDestination", nbr + 2, 0);
-            TypeAna MissionNumber = new TypeAna(tempPrefixe + ".MissionNumber", nbr + 2, 0);
-            TypeAna SorterOutputConveyorNumber = new TypeAna(tempPrefixe + ".SorterOutputConveyorNumber", nbr + 2, 0);
+            NavetteEvacuation.LayerEvacuation.ReceiveCom = new TypeBool(tempPrefixe + ".ReceiveCom", nbr + 1, false);
+            NavetteEvacuation.LayerEvacuation.LayerDestination = new TypeAna(tempPrefixe + ".LayerDestination", nbr + 2, 0);
+            NavetteEvacuation.LayerEvacuation.MissionNumber = new TypeAna(tempPrefixe + ".MissionNumber", nbr + 2, 0);
+            NavetteEvacuation.LayerEvacuation.SorterOutputConveyorNumber = new TypeAna(tempPrefixe + ".SorterOutputConveyorNumber", nbr + 2, 0);
         }
 
         private void EvacuationEchange2(uint nbr)
         {
+            // MissionStatus
             string tempPrefixe = tempPrefixeEvacuation + ".Echange2";
-            TypeBool SendCom = new TypeBool(tempPrefixe + ".SendCom", nbr + 1, false);
-            TypeBool MissionStatus = new TypeBool(tempPrefixe + ".MissionStatus", nbr + 2, false);
-            TypeAna MissionNumber = new TypeAna(tempPrefixe + ".MissionNumber", nbr + 3, 0);
+            NavetteEvacuation.MissionStatus.SendCom = new TypeBool(tempPrefixe + ".SendCom", nbr + 1, false);
+            NavetteEvacuation.MissionStatus.MissionStatus = new TypeBool(tempPrefixe + ".MissionStatus", nbr + 2, false);
+            NavetteEvacuation.MissionStatus.MissionNumber = new TypeAna(tempPrefixe + ".MissionNumber", nbr + 3, 0);
         }
 
         private void EvacuationEchange3(uint nbr)
         {
+            // ReportRunningMode
             string tempPrefixe = tempPrefixeEvacuation + ".Echange3";
-            TypeBool SendCom = new TypeBool(tempPrefixe + ".SendCom", nbr + 1, false);
-            TypeAna DefaultCode = new TypeAna(tempPrefixe + ".DefaultCode", nbr + 2, 0);
-            TypeAna EquipmentCode = new TypeAna(tempPrefixe + ".EquipmentCode", nbr + 3, 0);
-            TypeAna RunningMode = new TypeAna(tempPrefixe + ".RunningMode", nbr + 4, 0);
-            TypeString DefaultLabel = new TypeString(tempPrefixe + ".DefaultLabel", nbr + 5, "");
-            TypeString RunningModeDate = new TypeString(tempPrefixe + ".RunningModeDate", nbr + 6, "");
-            TypeString RunningModeTime = new TypeString(tempPrefixe + ".RunningModeTime", nbr + 7, "");
+            NavetteEvacuation.ReportRunningMode.SendCom = new TypeBool(tempPrefixe + ".SendCom", nbr + 1, false);
+            NavetteEvacuation.ReportRunningMode.DefaultCode = new TypeAna(tempPrefixe + ".DefaultCode", nbr + 2, 0);
+            NavetteEvacuation.ReportRunningMode.EquipmentCode = new TypeAna(tempPrefixe + ".EquipmentCode", nbr + 3, 0);
+            NavetteEvacuation.ReportRunningMode.RunningMode = new TypeAna(tempPrefixe + ".RunningMode", nbr + 4, 0);
+            NavetteEvacuation.ReportRunningMode.DefaultLabel = new TypeString(tempPrefixe + ".DefaultLabel", nbr + 5, "");
+            NavetteEvacuation.ReportRunningMode.RunningModeDate = new TypeString(tempPrefixe + ".RunningModeDate", nbr + 6, "");
+            NavetteEvacuation.ReportRunningMode.RunningModeTime = new TypeString(tempPrefixe + ".RunningModeTime", nbr + 7, "");
         }
 
         private void SvMgrAPI_OnDataChange2(SvMgrObjects.VariableResult[] ArrayVarResult)
@@ -166,18 +175,65 @@ namespace usrmgrDotNetProject
                         }
                         break;
                 }
+
+                /*--------------------------------------------------- Action sur changement de valeur ----------------------------------------------------*/
+                int indice;
+                /*------------------------- Navette Collecte --------------------------------------*/
+                // MissionStatus
+                indice = Variable.vVariableBool.IndexOf(NavetteCollecte.MissionStatus.SendCom);
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Indice : " + indice);
+                if(Variable.vVariableBool[indice].GetVarValue())
+                {
+
+                    Variable.vVariableBool[indice].WriteVar(false);
+                    SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Navette Collecte -- MissionStatus OK");
+
+                }
+                
+                // ReportRunningMode
+                indice = Variable.vVariableBool.IndexOf(NavetteCollecte.ReportRunningMode.SendCom);
+                if (Variable.vVariableBool[indice].GetVarValue())
+                {
+
+                    Variable.vVariableBool[indice].WriteVar(false);
+                    SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Navette Collecte -- ReportRunningMode OK");
+
+                }
+
+                // TapingOutputConveyorNumber
+                indice = Variable.vVariableBool.IndexOf(NavetteCollecte.TapingOutputConveyorNumber.SendCom);
+                if (Variable.vVariableBool[indice].GetVarValue())
+                {
+
+                    Variable.vVariableBool[indice].WriteVar(false);
+                    SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Navette Collecte -- TapingOutputConveyorNumber OK");
+
+                }
+
+                /*------------------------- Navette Evacuation --------------------------------------*/
+                
+                // MissionStatus
+                indice = Variable.vVariableBool.IndexOf(NavetteEvacuation.MissionStatus.SendCom);
+                if (Variable.vVariableBool[indice].GetVarValue())
+                {
+
+                    Variable.vVariableBool[indice].WriteVar(false);
+                    SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Navette Evacuation -- MissionStatus OK");
+
+                }
+
+                // ReportRunningMode
+                indice = Variable.vVariableBool.IndexOf(NavetteEvacuation.ReportRunningMode.SendCom);
+                if (Variable.vVariableBool[indice].GetVarValue())
+                {
+
+                    Variable.vVariableBool[indice].WriteVar(false);
+                    SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Navette Evacuation -- ReportRunningMode OK");
+
+                }
+
+                /*--------------------------------------------------- Fin action sur changement de valeur ----------------------------------------------------*/
             }
-
-            /*--------------------------------------------------- Action sur changement de valeur ----------------------------------------------------*/
-            
-            if (Variable.vVariableBool[0].GetVarValue())
-            {
-
-                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "MissionStatus OK");
-
-            }
-            
-            /*--------------------------------------------------- Fin action sur changement de valeur ----------------------------------------------------*/
         }
 
         private void SvMgrAPI_Boucle()

@@ -7,6 +7,7 @@ using SvMgrObjects;
 
 namespace usrmgrDotNetProject
 {
+
     class Variable
     {
         public static List<TypeBool> vVariableBool = new List<TypeBool>();
@@ -14,6 +15,61 @@ namespace usrmgrDotNetProject
         public static List<TypeString> vVariableString = new List<TypeString>();
         protected string m_name;
         protected uint m_adviseN;
+
+        public struct sMissionStatus
+        {
+            public TypeBool SendCom;
+            public TypeBool MissionStatus;
+            public TypeAna MissionNumber;
+        }
+
+        public struct sLayerDestionation
+        {
+            public TypeBool ReceiveCom;
+            public TypeAna MissionNumber;
+            public TypeAna SorterInputConveyorNumber;
+            public TypeAna TapingOutputConveyorNumber;
+        }
+
+        public struct sTapingOutputConveyorNumber
+        {
+            public TypeBool SendCom;
+            public TypeAna TapingOutputConveyorNumber;
+        }
+
+        public struct sReportRunningMode
+        {
+            public TypeBool SendCom;
+            public TypeAna DefaultCode;
+            public TypeAna EquipmentCode;
+            public TypeAna RunningMode;
+            public TypeString DefaultLabel;
+            public TypeString RunningModeDate;
+            public TypeString RunningModeTime;
+        }
+
+        public struct sLayerEvacuation
+        {
+            public TypeBool ReceiveCom;
+            public TypeAna MissionNumber;
+            public TypeAna LayerDestination;
+            public TypeAna SorterOutputConveyorNumber;
+        }
+
+        public struct sNavetteCollecte
+        {
+            public sTapingOutputConveyorNumber TapingOutputConveyorNumber;
+            public sLayerDestionation LayerDestination;
+            public sMissionStatus MissionStatus;
+            public sReportRunningMode ReportRunningMode;
+        }
+
+        public struct sNavetteEvacuation
+        {
+            public sLayerEvacuation LayerEvacuation;
+            public sMissionStatus MissionStatus;
+            public sReportRunningMode ReportRunningMode;
+        }
 
         public Variable()
         {
@@ -60,7 +116,8 @@ namespace usrmgrDotNetProject
 
     class TypeBool : Variable
     {
-        
+
+
         private bool m_value;
 
         public TypeBool()
