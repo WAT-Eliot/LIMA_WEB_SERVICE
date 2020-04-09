@@ -37,6 +37,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,13 +52,7 @@
     <Compile Include="Variable.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Client_Lima\Client_Lima.csproj">
-      <Project>{f63acece-544c-425f-a056-fe6ca5479ed8}</Project>
-      <Name>Client_Lima</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

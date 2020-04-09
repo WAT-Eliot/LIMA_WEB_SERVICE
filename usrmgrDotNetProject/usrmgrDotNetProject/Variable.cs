@@ -9,9 +9,9 @@ namespace usrmgrDotNetProject
 {
     class Variable
     {
-        public static TypeBool[] vVariableBool = new TypeBool[2];
-        public static TypeAna[] vVariableAna = new TypeAna[2];
-        public static TypeString[] vVariableString = new TypeString[2];
+        public static List<TypeBool> vVariableBool = new List<TypeBool>();
+        public static List<TypeAna> vVariableAna = new List<TypeAna>();
+        public static List<TypeString> vVariableString = new List<TypeString>();
         protected string m_name;
         protected uint m_adviseN;
 
@@ -76,7 +76,9 @@ namespace usrmgrDotNetProject
             if(adviseN != 0)
             {
                 this.Advise();
-               
+
+                //Ajout liste pour comptage
+                Variable.vVariableBool.Add(this);
             }
             
         }
@@ -107,7 +109,6 @@ namespace usrmgrDotNetProject
 
     class TypeAna : Variable
     {
-
         private double m_value;
 
         public TypeAna()
@@ -124,7 +125,8 @@ namespace usrmgrDotNetProject
             {
                 this.Advise();
 
-                //Ajout vecteur pour comptage
+                //Ajout liste pour comptage
+                Variable.vVariableAna.Add(this);
             }
         }
 
@@ -172,7 +174,8 @@ namespace usrmgrDotNetProject
             {
                 this.Advise();
 
-                //Ajout vecteur pour comptage
+                //Ajout liste pour comptage
+                Variable.vVariableString.Add(this);
             }
         }
 

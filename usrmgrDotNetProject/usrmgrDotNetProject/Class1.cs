@@ -1,23 +1,38 @@
-﻿using Client_Lima.CollectShuttleToMx;
-using Client_Lima.EvacuationShuttleToMx;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-
+/*
+using usrmgrDotNetProject.CollectShuttleToMx;
+using usrmgrDotNetProject.EvacuationShuttleToMx;
+*/
 
 namespace usrmgrDotNetProject
 {
     public class Main:IDisposable 
     {
+        /*
+        InterfacesPostTapingCollectShuttleToMx01Client collectClient = new InterfacesPostTapingCollectShuttleToMx01Client();
+        InterfacesPostTapingEvacuationShuttleToMx01Client evacuationClient = new InterfacesPostTapingEvacuationShuttleToMx01Client();
 
-        
+        PostTapingCollectShuttleMissionStatusRequest resquestMissionStatusCollect = new PostTapingCollectShuttleMissionStatusRequest();
+        PostTapingCollectShuttleReportRunningModeRequest resquestReportRunningModeCollect = new PostTapingCollectShuttleReportRunningModeRequest();
+        PostTapingCollectShuttleTapingOutputConveyorRequest requestConveyorNumberCollect = new PostTapingCollectShuttleTapingOutputConveyorRequest();
+        PostTapingEvacuationShuttleMissionStatusRequest resquestMissionStatusEvacuation = new PostTapingEvacuationShuttleMissionStatusRequest();
+        PostTapingEvacuationShuttleReportRunningModeRequest resquestReportRunningModeEvacuation = new PostTapingEvacuationShuttleReportRunningModeRequest();
+        */
+        private static string tempPrefixeMx = "Mx";
+        private string tempPrefixeCollecte = tempPrefixeMx + ".NavetteCollecte";
+        private string tempPrefixeEvacuation = tempPrefixeMx + ".NavetteEvacuation";
+
+
         public Main()
         {
             SvMgrAPI.StartProject += SvMgrAPI_StartProject;
             //SvMgrAPI.StartProject += SvMgrAPI_Boucle;
             SvMgrAPI.OnDataChange2 += SvMgrAPI_OnDataChange2;
+            //Init_Client_Lima();
         }
 
 
@@ -25,82 +40,144 @@ namespace usrmgrDotNetProject
         private void SvMgrAPI_StartProject()
         {
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "DLL démarrée");
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 09/04/2020 10H00");
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 09/04/2020 13H00");
 
             /*----------------------------- Déclaration des variables ----------------------------------------*/
-            
-            // Variable bool
-            TypeBool Test = new TypeBool("Mx.Test", 1, false);
-            Variable.vVariableBool[0] = Test;
-            TypeBool Test1 = new TypeBool("Mx.Test1", 2, false);
-            Variable.vVariableBool[1] = Test1;
 
-            //Variable Ana
-            TypeAna Ana = new TypeAna("Mx.Ana", 3, 0);
-            Variable.vVariableAna[0] = Ana;
-            TypeAna Ana1 = new TypeAna("Mx.Ana1", 4, 0);
-            Variable.vVariableAna[1] = Ana1;
+            /*------------------------ Navette Collecte -----------------------------------------------------*/
 
-            //Variable String
-            TypeString Txt = new TypeString("Mx.Txt", 5, "");
-            Variable.vVariableString[0] = Txt;
-            TypeString Txt1 = new TypeString("Mx.Txt1", 6, "");
-            Variable.vVariableString[1] = Txt1;
+            CollecteEchange1(0);
+            CollecteEchange2(20);
+            CollecteEchange3(40);
+            CollecteEchange4(60);
+
+            /*------------------------ Navette Evacuation -----------------------------------------------------*/
+
+            EvacuationEchange1(100);
+            EvacuationEchange2(120);
+            EvacuationEchange3(1400);
 
             /*----------------------------- Fin Déclaration des variables ----------------------------------------*/
+
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Il y a : " + Variable.vVariableBool.Count() + " bools, " + Variable.vVariableAna.Count() + " valeurs ana, " + Variable.vVariableString.Count() + " chaines de caractere.");
+        }
+
+        private void CollecteEchange1(uint nbr)
+        {
+            string tempPrefixe = tempPrefixeCollecte + ".Echange1";
+
+            TypeBool SendCom = new TypeBool(tempPrefixe + ".SendCom", nbr + 1, false);
+            TypeAna TapingOutputConveyorNumber = new TypeAna(tempPrefixe + ".TapingOutputConveyorNumber", nbr + 2, 0);
+        }
+
+        private void CollecteEchange2(uint nbr)
+        {
+            string tempPrefixe = tempPrefixeCollecte + ".Echange2";
+            TypeBool ReceiveCom = new TypeBool(tempPrefixe + ".ReceiveCom", nbr + 1, false);
+            TypeAna MissionNumber = new TypeAna(tempPrefixe + ".MissionNumber", nbr + 2, 0);
+            TypeAna SorterInputConveyorNumber = new TypeAna(tempPrefixe + ".SorterInputConveyorNumber", nbr + 3, 0);
+            TypeAna TapingOutputConveyor = new TypeAna(tempPrefixe + ".TapingOutputConveyor", nbr + 4, 0);
+        }
+
+        private void CollecteEchange3(uint nbr)
+        {
+            string tempPrefixe = tempPrefixeCollecte + ".Echange3";
+            TypeBool SendCom = new TypeBool(tempPrefixe + ".SendCom", nbr + 1, false);
+            TypeBool MissionStatus = new TypeBool(tempPrefixe + ".MissionStatus", nbr + 2, false);
+            TypeAna MissionNumber = new TypeAna(tempPrefixe + ".MissionNumber", nbr + 3, 0);
+        }
+
+        private void CollecteEchange4(uint nbr)
+        {
+            string tempPrefixe = tempPrefixeCollecte + ".Echange4";
+            TypeBool SendCom = new TypeBool(tempPrefixe + ".SendCom", nbr + 1, false);
+            TypeAna DefaultCode = new TypeAna(tempPrefixe + ".DefaultCode", nbr + 2, 0);
+            TypeAna EquipmentCode = new TypeAna(tempPrefixe + ".EquipmentCode", nbr + 3, 0);
+            TypeAna RunningMode = new TypeAna(tempPrefixe + ".RunningMode", nbr + 4, 0);
+            TypeString DefaultLabel = new TypeString(tempPrefixe + ".DefaultLabel", nbr + 5, "");
+            TypeString RunningModeDate = new TypeString(tempPrefixe + ".RunningModeDate", nbr + 6, "");
+            TypeString RunningModeTime = new TypeString(tempPrefixe + ".RunningModeTime", nbr + 7, "");
+        }
+
+        private void EvacuationEchange1(uint nbr)
+        {
+            string tempPrefixe = tempPrefixeEvacuation + ".Echange1";
+
+            TypeBool ReceiveCom = new TypeBool(tempPrefixe + ".ReceiveCom", nbr + 1, false);
+            TypeAna LayerDestination = new TypeAna(tempPrefixe + ".LayerDestination", nbr + 2, 0);
+            TypeAna MissionNumber = new TypeAna(tempPrefixe + ".MissionNumber", nbr + 2, 0);
+            TypeAna SorterOutputConveyorNumber = new TypeAna(tempPrefixe + ".SorterOutputConveyorNumber", nbr + 2, 0);
+        }
+
+        private void EvacuationEchange2(uint nbr)
+        {
+            string tempPrefixe = tempPrefixeEvacuation + ".Echange2";
+            TypeBool SendCom = new TypeBool(tempPrefixe + ".SendCom", nbr + 1, false);
+            TypeBool MissionStatus = new TypeBool(tempPrefixe + ".MissionStatus", nbr + 2, false);
+            TypeAna MissionNumber = new TypeAna(tempPrefixe + ".MissionNumber", nbr + 3, 0);
+        }
+
+        private void EvacuationEchange3(uint nbr)
+        {
+            string tempPrefixe = tempPrefixeEvacuation + ".Echange3";
+            TypeBool SendCom = new TypeBool(tempPrefixe + ".SendCom", nbr + 1, false);
+            TypeAna DefaultCode = new TypeAna(tempPrefixe + ".DefaultCode", nbr + 2, 0);
+            TypeAna EquipmentCode = new TypeAna(tempPrefixe + ".EquipmentCode", nbr + 3, 0);
+            TypeAna RunningMode = new TypeAna(tempPrefixe + ".RunningMode", nbr + 4, 0);
+            TypeString DefaultLabel = new TypeString(tempPrefixe + ".DefaultLabel", nbr + 5, "");
+            TypeString RunningModeDate = new TypeString(tempPrefixe + ".RunningModeDate", nbr + 6, "");
+            TypeString RunningModeTime = new TypeString(tempPrefixe + ".RunningModeTime", nbr + 7, "");
         }
 
         private void SvMgrAPI_OnDataChange2(SvMgrObjects.VariableResult[] ArrayVarResult)
         {
             
             for (int i = 0; i < ArrayVarResult.Length; i++) {
-                //SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Variable modifiée : " + ArrayVarResult[i].clientHandle);
-                //SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Type de la Variable modifiée : " + ArrayVarResult[i].varValue.vt);
-
                 switch (ArrayVarResult[i].varValue.vt)
                 {
                     case SvMgrEnums.VarType.svmgr_vtLOG:
-                        for (int iTailleTab = 0; iTailleTab < Variable.vVariableBool.Length; iTailleTab++)
+                        foreach (TypeBool typeBool in Variable.vVariableBool)
                         {
-                            if((Variable.vVariableBool[iTailleTab].GetAdviseNumber() == ArrayVarResult[i].clientHandle))
+                            if ((typeBool.GetAdviseNumber() == ArrayVarResult[i].clientHandle))
                             {
-                                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, Variable.vVariableBool[iTailleTab].GetVarName() + " = " + ArrayVarResult[i].varValue.Log);
-                                Variable.vVariableBool[iTailleTab].SetVar(ArrayVarResult[i].varValue.Log);
+                                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, typeBool.GetVarName() + " = " + ArrayVarResult[i].varValue.Log);
+                                typeBool.SetVar(ArrayVarResult[i].varValue.Log);
                             }
                         }
                         break;
                     case SvMgrEnums.VarType.svmgr_vtANA:
-                        for (int iTailleTab = 0; iTailleTab < Variable.vVariableAna.Length; iTailleTab++)
+                        foreach (TypeAna typeAna in Variable.vVariableAna)
                         {
-                            if ((Variable.vVariableAna[iTailleTab].GetAdviseNumber() == ArrayVarResult[i].clientHandle))
+                            if ((typeAna.GetAdviseNumber() == ArrayVarResult[i].clientHandle))
                             {
-                                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, Variable.vVariableAna[iTailleTab].GetVarName() + " = " + ArrayVarResult[i].varValue.Ana);
-                                Variable.vVariableAna[iTailleTab].SetVar(ArrayVarResult[i].varValue.Ana);
+                                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, typeAna.GetVarName() + " = " + ArrayVarResult[i].varValue.Ana);
+                                typeAna.SetVar(ArrayVarResult[i].varValue.Ana);
                             }
                         }
                         break;
                     case SvMgrEnums.VarType.svmgr_vtTXT:
-                        for (int iTailleTab = 0; iTailleTab < Variable.vVariableString.Length; iTailleTab++)
+                        foreach (TypeString typeString in Variable.vVariableString)
                         {
-                            if ((Variable.vVariableString[iTailleTab].GetAdviseNumber() == ArrayVarResult[i].clientHandle))
+                            if ((typeString.GetAdviseNumber() == ArrayVarResult[i].clientHandle))
                             {
-                                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, Variable.vVariableString[iTailleTab].GetVarName() + " = " + ArrayVarResult[i].varValue.Txt);
-                                Variable.vVariableString[iTailleTab].SetVar(ArrayVarResult[i].varValue.Txt);
+                                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, typeString.GetVarName() + " = " + ArrayVarResult[i].varValue.Txt);
+                                typeString.SetVar(ArrayVarResult[i].varValue.Txt);
                             }
                         }
                         break;
                 }
             }
 
-            //Action 
-
+            /*--------------------------------------------------- Action sur changement de valeur ----------------------------------------------------*/
+            
             if (Variable.vVariableBool[0].GetVarValue())
             {
-                Variable.vVariableString[1].WriteVar("Coucou");
+
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "MissionStatus OK");
+
             }
-
-            Variable.vVariableBool[1].WriteVar(!Variable.vVariableBool[0].GetVarValue());
-
+            
+            /*--------------------------------------------------- Fin action sur changement de valeur ----------------------------------------------------*/
         }
 
         private void SvMgrAPI_Boucle()
@@ -111,7 +188,7 @@ namespace usrmgrDotNetProject
                 {
                     if (Variable.vVariableBool[0].GetVarValue())
                     {
-                        Variable.vVariableAna[1].WriteVar(666);
+                        
                     }
 
 
@@ -124,48 +201,36 @@ namespace usrmgrDotNetProject
                 }
             }
         }
+        /*
+        private void Init_Client_Lima()
+        {
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Init Client Lima");
+            //Collect
+            resquestMissionStatusCollect.MissionNumber = 0;
+            resquestMissionStatusCollect.MissionStatus = PostTapingCollectShuttleMissionStatusType.Ok;
+
+            resquestReportRunningModeCollect.DefaultCode = 0;
+            resquestReportRunningModeCollect.DefaultLabel = "?";
+            resquestReportRunningModeCollect.EquipmentCode = 0;
+            resquestReportRunningModeCollect.RunningMode = PostTapingCollectShuttleRunningModeType.Manual;
+            resquestReportRunningModeCollect.RunningModeDateTime = DateTime.Now;
+            
+            requestConveyorNumberCollect.TapingOutputConveyorNumber = 0;
+
+            //Evacuation
+            resquestMissionStatusEvacuation.MissionNumber = 0;
+            resquestMissionStatusEvacuation.MissionStatus = PostTapingEvacuationShuttleMissionStatusType.Ok;
+
+            resquestReportRunningModeEvacuation.DefaultCode = 0;
+            resquestReportRunningModeEvacuation.DefaultLabel = "?";
+            resquestReportRunningModeEvacuation.EquipmentCode = 0;
+            resquestReportRunningModeEvacuation.RunningMode = PostTapingEvacuationShuttleRunningModeType.Manual;
+            resquestReportRunningModeEvacuation.RunningModeDateTime = DateTime.Now;
+        }
 
         private void Client_Lima()
         {
-            InterfacesPostTapingCollectShuttleToMx01Client collectClient = new InterfacesPostTapingCollectShuttleToMx01Client();
-            InterfacesPostTapingEvacuationShuttleToMx01Client evacuationClient = new InterfacesPostTapingEvacuationShuttleToMx01Client();
-
-            //Collect
-            PostTapingCollectShuttleMissionStatusRequest resquestMissionStatusCollect = new PostTapingCollectShuttleMissionStatusRequest
-            {
-                MissionNumber = 0,
-                MissionStatus = PostTapingCollectShuttleMissionStatusType.Ok,
-            };
-
-            PostTapingCollectShuttleReportRunningModeRequest resquestReportRunningModeCollect = new PostTapingCollectShuttleReportRunningModeRequest
-            {
-                DefaultCode = 0,
-                DefaultLabel = "?",
-                EquipmentCode = 0,
-                RunningMode = PostTapingCollectShuttleRunningModeType.Manual,
-                RunningModeDateTime = DateTime.Now,
-            };
-
-            PostTapingCollectShuttleTapingOutputConveyorRequest requestConveyorNumberCollect = new PostTapingCollectShuttleTapingOutputConveyorRequest
-            {
-                TapingOutputConveyorNumber = 0,
-            };
-
-            //Evacuation
-            PostTapingEvacuationShuttleMissionStatusRequest resquestMissionStatusEvacuation = new PostTapingEvacuationShuttleMissionStatusRequest
-            {
-                MissionNumber = 0,
-                MissionStatus = PostTapingEvacuationShuttleMissionStatusType.Ok,
-            };
-
-            PostTapingEvacuationShuttleReportRunningModeRequest resquestReportRunningModeEvacuation = new PostTapingEvacuationShuttleReportRunningModeRequest
-            {
-                DefaultCode = 0,
-                DefaultLabel = "?",
-                EquipmentCode = 0,
-                RunningMode = PostTapingEvacuationShuttleRunningModeType.Manual,
-                RunningModeDateTime = DateTime.Now,
-            };
+            
 
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collect");
             collectClient.MissionStatus(resquestMissionStatusCollect);
@@ -184,7 +249,7 @@ namespace usrmgrDotNetProject
             evacuationClient.ReportRunningMode(resquestReportRunningModeEvacuation);
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "ReportRunningMode OK");
         }
-
+        */
         public void Dispose()
         {
             
