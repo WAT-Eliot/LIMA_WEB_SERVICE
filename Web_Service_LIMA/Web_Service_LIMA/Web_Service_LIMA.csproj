@@ -64,15 +64,20 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CollectService.svc" />
+    <Content Include="InterfacesMxToPostTapingCollectShuttle01.svc" />
+    <Content Include="EvacuationService.svc" />
     <Content Include="Service1.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CollectService.svc.cs">
-      <DependentUpon>CollectService.svc</DependentUpon>
+    <Compile Include="InterfacesMxToPostTapingCollectShuttle01.svc.cs">
+      <DependentUpon>InterfacesMxToPostTapingCollectShuttle01.svc</DependentUpon>
+    </Compile>
+    <Compile Include="EvacuationService.svc.cs">
+      <DependentUpon>EvacuationService.svc</DependentUpon>
     </Compile>
     <Compile Include="InterfacesMxToPostTapingCollectShuttle01Impl.cs" />
+    <Compile Include="InterfacesMxToPostTapingEvacuationShuttle01Impl.cs" />
     <Compile Include="Service1.svc.cs">
       <DependentUpon>Service1.svc</DependentUpon>
     </Compile>
