@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading;
+using usrmgrDotNetProject.CollectShuttleToMx;
 using Web_Service_LIMA;
 /*
 using usrmgrDotNetProject.CollectShuttleToMx;
@@ -38,7 +39,10 @@ namespace usrmgrDotNetProject
         // Create the ServiceHost.
         ServiceHost hostEvacuation = new ServiceHost(typeof(EvacuationService), baseAddress);
 
-        Web_Service_Evacuation Service_Evacuation = new Web_Service_Evacuation();
+         Web_Service_Evacuation Service_Evacuation = new Web_Service_Evacuation();
+
+        //Client
+        private InterfacesPostTapingCollectShuttleToMx01Client collectClient = new InterfacesPostTapingCollectShuttleToMx01Client();
 
         public Main()
         {
@@ -51,11 +55,8 @@ namespace usrmgrDotNetProject
 
         private void SvMgrAPI_StartProject()
         {
-
-            
-
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "DLL démarrée");
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 09/04/2020 16H00");
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 14/04/2020 11H00");
 
             /*----------------------------- Déclaration des variables ----------------------------------------*/
 
@@ -78,6 +79,18 @@ namespace usrmgrDotNetProject
 
             Service_Evacuation.Start(hostEvacuation);
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Service Web Evacuation démarrée !");
+
+            //////////////////
+            
+            //Collect
+            PostTapingCollectShuttleMissionStatusRequest resquestMissionStatusCollect = new PostTapingCollectShuttleMissionStatusRequest
+            {
+                MissionNumber = 123,
+                MissionStatus = PostTapingCollectShuttleMissionStatusType.Ok,
+            };
+
+            //collectClient.MissionStatus(resquestMissionStatusCollect);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Mission Status !");
         }
 
         public void CollecteEchange1(uint nbr)
