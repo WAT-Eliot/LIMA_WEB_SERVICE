@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading;
+using Web_Service_LIMA;
 /*
 using usrmgrDotNetProject.CollectShuttleToMx;
 using usrmgrDotNetProject.EvacuationShuttleToMx;
@@ -30,6 +32,14 @@ namespace usrmgrDotNetProject
         Variable.sNavetteCollecte NavetteCollecte = new Variable.sNavetteCollecte();
         Variable.sNavetteEvacuation NavetteEvacuation = new Variable.sNavetteEvacuation();
 
+        /*---------------------------- Web service ----------------------------------------------*/
+        // Evacuation
+        static Uri baseAddress = new Uri("http://localhost:8080/InterfacesPostTapingCollectShuttleToMx0101");
+        // Create the ServiceHost.
+        ServiceHost hostEvacuation = new ServiceHost(typeof(EvacuationService), baseAddress);
+
+        Web_Service_Evacuation Service_Evacuation = new Web_Service_Evacuation();
+
         public Main()
         {
             SvMgrAPI.StartProject += SvMgrAPI_StartProject;
@@ -39,9 +49,11 @@ namespace usrmgrDotNetProject
         }
 
 
-
         private void SvMgrAPI_StartProject()
         {
+
+            
+
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "DLL démarrée");
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 09/04/2020 16H00");
 
@@ -63,6 +75,9 @@ namespace usrmgrDotNetProject
             /*----------------------------- Fin Déclaration des variables ----------------------------------------*/
 
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Il y a : " + (Variable.vVariableBool.Count() + Variable.vVariableAna.Count() + Variable.vVariableString.Count()) + " variables dont " + Variable.vVariableBool.Count() + " booleans, " + Variable.vVariableAna.Count() + " valeurs ana, " + Variable.vVariableString.Count() + " chaines de caractere.");
+
+            Service_Evacuation.Start(hostEvacuation);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Service Web Evacuation démarrée !");
         }
 
         public void CollecteEchange1(uint nbr)
@@ -308,7 +323,8 @@ namespace usrmgrDotNetProject
         */
         public void Dispose()
         {
-            
+            // Close the ServiceHost.
+            hostEvacuation.Close();
         }
 
     }
