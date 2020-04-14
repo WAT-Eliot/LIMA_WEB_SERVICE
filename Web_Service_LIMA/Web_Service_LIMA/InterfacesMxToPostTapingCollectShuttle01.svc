@@ -1,1 +1,0 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="Web_Service_LIMA.CollectService" CodeBehind="InterfacesMxToPostTapingCollectShuttle01.svc.cs" %>

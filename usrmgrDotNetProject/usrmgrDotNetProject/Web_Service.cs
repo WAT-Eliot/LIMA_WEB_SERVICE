@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace usrmgrDotNetProject
 {
-    class Web_Service_Evacuation
+    class Web_Service
     {
         public void Start(ServiceHost host)
         {
@@ -22,7 +22,7 @@ namespace usrmgrDotNetProject
             // no endpoints are explicitly configured, the runtime will create
             // one endpoint per base address for each service contract implemented
             // by the service.
-            // Type as admin : netsh http add urlacl url=http://+:8080/InterfacesPostTapingCollectShuttleToMx0101 user=WAT
+            // Type as admin : netsh http add urlacl url=http://+:8080/InterfacesMxToPostTapingCollectShuttle01 user=WAT
             host.Open();
         }
     }

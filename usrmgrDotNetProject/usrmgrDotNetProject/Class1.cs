@@ -35,20 +35,24 @@ namespace usrmgrDotNetProject
         Variable.sNavetteEvacuation NavetteEvacuation = new Variable.sNavetteEvacuation();
 
         /*---------------------------- Web service ----------------------------------------------*/
-        // Evacuation
-        //static Uri baseAddress = new Uri("http://localhost:8080/InterfacesMxToPostTapingEvacuationShuttle01");
-        static Uri baseAddress = new Uri("http://2.7.106.131:8080/InterfacesMxToPostTapingEvacuationShuttle01");
+        //Collect
+        //static Uri baseAddressCollect = new Uri("http://localhost:8080/InterfacesMxToPostTapingCollectShuttle01");
+        static Uri baseAddressCollect = new Uri("http://2.7.106.131:8080/InterfacesMxToPostTapingCollectShuttle01");
         // Create the ServiceHost.
-        ServiceHost hostEvacuation = new ServiceHost(typeof(EvacuationService), baseAddress);
+        ServiceHost hostCollect = new ServiceHost(typeof(CollectService), baseAddressCollect);
 
-         Web_Service_Evacuation Service_Evacuation = new Web_Service_Evacuation();
+        Web_Service Service_Collect = new Web_Service();
+        
+        // Evacuation
+        //static Uri baseAddressEvacuation = new Uri("http://localhost:8080/InterfacesMxToPostTapingEvacuationShuttle01");
+        static Uri baseAddressEvacuation = new Uri("http://2.7.106.131:8080/InterfacesMxToPostTapingEvacuationShuttle01");
+        // Create the ServiceHost.
+        ServiceHost hostEvacuation = new ServiceHost(typeof(EvacuationService), baseAddressEvacuation);
 
-        public void Test(int MissionNumber)
-        {
-            NavetteEvacuation.LayerEvacuation.MissionNumber.WriteVar(MissionNumber);
-        }
+        Web_Service Service_Evacuation = new Web_Service();
+         
 
-        //Client
+        /*------------------------------------------------ Client -----------------------------------*/
         internal static InterfacesPostTapingCollectShuttleToMx01Client collectClient;
 
         //Collect
@@ -61,16 +65,13 @@ namespace usrmgrDotNetProject
         public Main()
         {
             SvMgrAPI.StartProject += SvMgrAPI_StartProject;
-            //SvMgrAPI.StartProject += SvMgrAPI_Boucle;
             SvMgrAPI.OnDataChange2 += SvMgrAPI_OnDataChange2;
-            //Init_Client_Lima();
         }
-
 
         private void SvMgrAPI_StartProject()
         {
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "DLL démarrée");
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 14/04/2020 16H00");
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 14/04/2020 18H00");
 
             /*----------------------------- Déclaration des variables ----------------------------------------*/
 
@@ -87,9 +88,14 @@ namespace usrmgrDotNetProject
             EvacuationEchange2(120);
             EvacuationEchange3(140);
 
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Il y a : " + (Variable.vVariableBool.Count() + Variable.vVariableAna.Count() + Variable.vVariableString.Count()) + " variables dont " + Variable.vVariableBool.Count() + " booleans, " + Variable.vVariableAna.Count() + " valeurs ana, " + Variable.vVariableString.Count() + " chaines de caractere.");
+
             /*----------------------------- Fin Déclaration des variables ----------------------------------------*/
 
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Il y a : " + (Variable.vVariableBool.Count() + Variable.vVariableAna.Count() + Variable.vVariableString.Count()) + " variables dont " + Variable.vVariableBool.Count() + " booleans, " + Variable.vVariableAna.Count() + " valeurs ana, " + Variable.vVariableString.Count() + " chaines de caractere.");
+
+            Service_Collect.Start(hostCollect);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Service Web Collect démarrée !");
+
 
             Service_Evacuation.Start(hostEvacuation);
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Service Web Evacuation démarrée !");
@@ -307,6 +313,7 @@ namespace usrmgrDotNetProject
         {
             // Close the ServiceHost.
             hostEvacuation.Close();
+            hostCollect.Close();
         }
 
     }

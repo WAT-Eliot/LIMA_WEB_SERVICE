@@ -1,5 +1,4 @@
 ﻿using evacuationns;
-//using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +13,11 @@ namespace Web_Service_LIMA
     // REMARQUE : pour lancer le client test WCF afin de tester ce service, sélectionnez EvacuationService.svc ou EvacuationService.svc.cs dans l'Explorateur de solutions et démarrez le débogage.
     public class EvacuationService : evacuationns.IInterfacesMxToPostTapingEvacuationShuttle01
     {
-        //private static ILog log = LogManager.GetLogger("EvacuationService"); //Start logger
-
         public void LayerEvacuation(PostTapingEvacuationShuttleLayerEvacuationRequest request)
         {
-            //log.Info(request.MissionNumber + " " + request.LayerDestination + " " + request.SorterOutputConveyorNumber);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "MissionNumber : " + request.MissionNumber);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "LayerDestination : " + request.LayerDestination);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "SorterOutputConveyorNumber : " + request.SorterOutputConveyorNumber);
         }
     }
 }
