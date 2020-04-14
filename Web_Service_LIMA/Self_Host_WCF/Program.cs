@@ -26,7 +26,7 @@ namespace SelfHostWCF
     {
         static void Main(string[] args)
         {
-            Uri baseAddress = new Uri("http://localhost:8080/InterfacesPostTapingCollectShuttleToMx0101");
+            Uri baseAddress = new Uri("http://localhost:8080/InterfacesMxToPostTapingEvacuationShuttle01");
 
             // Create the ServiceHost.
             using (ServiceHost host = new ServiceHost(typeof(HelloWorldService), baseAddress))
@@ -41,7 +41,7 @@ namespace SelfHostWCF
                 // no endpoints are explicitly configured, the runtime will create
                 // one endpoint per base address for each service contract implemented
                 // by the service.
-                // Type as admin : netsh http add urlacl url=http://+:8080/InterfacesPostTapingCollectShuttleToMx0101 user=WAT
+                // Type as admin : netsh http add urlacl url=http://+:8080/InterfacesMxToPostTapingEvacuationShuttle01 user=WAT
                 host.Open();
 
                 Console.WriteLine("The service is ready at {0}", baseAddress);

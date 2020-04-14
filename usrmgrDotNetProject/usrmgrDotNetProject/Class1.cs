@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading;
+//using CollectShuttleToMx;
 using usrmgrDotNetProject.CollectShuttleToMx;
 using Web_Service_LIMA;
 /*
@@ -35,14 +36,27 @@ namespace usrmgrDotNetProject
 
         /*---------------------------- Web service ----------------------------------------------*/
         // Evacuation
-        static Uri baseAddress = new Uri("http://localhost:8080/InterfacesPostTapingCollectShuttleToMx0101");
+        //static Uri baseAddress = new Uri("http://localhost:8080/InterfacesMxToPostTapingEvacuationShuttle01");
+        static Uri baseAddress = new Uri("http://2.7.106.131:8080/InterfacesMxToPostTapingEvacuationShuttle01");
         // Create the ServiceHost.
         ServiceHost hostEvacuation = new ServiceHost(typeof(EvacuationService), baseAddress);
 
          Web_Service_Evacuation Service_Evacuation = new Web_Service_Evacuation();
 
+        public void Test(int MissionNumber)
+        {
+            NavetteEvacuation.LayerEvacuation.MissionNumber.WriteVar(MissionNumber);
+        }
+
         //Client
-        private InterfacesPostTapingCollectShuttleToMx01Client collectClient = new InterfacesPostTapingCollectShuttleToMx01Client();
+        internal static InterfacesPostTapingCollectShuttleToMx01Client collectClient;
+
+        //Collect
+        PostTapingCollectShuttleMissionStatusRequest resquestMissionStatusCollect = new PostTapingCollectShuttleMissionStatusRequest
+        {
+            MissionNumber = 123,
+            MissionStatus = PostTapingCollectShuttleMissionStatusType.Ok,
+        };
 
         public Main()
         {
@@ -56,7 +70,7 @@ namespace usrmgrDotNetProject
         private void SvMgrAPI_StartProject()
         {
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "DLL démarrée");
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 14/04/2020 11H00");
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 14/04/2020 16H00");
 
             /*----------------------------- Déclaration des variables ----------------------------------------*/
 
@@ -81,15 +95,19 @@ namespace usrmgrDotNetProject
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Service Web Evacuation démarrée !");
 
             //////////////////
-            
-            //Collect
-            PostTapingCollectShuttleMissionStatusRequest resquestMissionStatusCollect = new PostTapingCollectShuttleMissionStatusRequest
+            try
             {
-                MissionNumber = 123,
-                MissionStatus = PostTapingCollectShuttleMissionStatusType.Ok,
-            };
+                System.ServiceModel.Channels.Binding Test = new System.ServiceModel.BasicHttpBinding();
+                EndpointAddress address = new EndpointAddress("http://wstest.groupeliebot.fr/Mx/Lima1/Mx.Broker.Lima.Endpoint/Interface/InterfacesPostTapingCollectShuttleToMx0101.svc");
+                collectClient = new InterfacesPostTapingCollectShuttleToMx01Client(Test,address);
+            }
 
-            //collectClient.MissionStatus(resquestMissionStatusCollect);
+            catch (Exception e)
+            {
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, e.Message);
+            }
+
+            collectClient.MissionStatus(resquestMissionStatusCollect);
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Mission Status !");
         }
 
@@ -209,10 +227,9 @@ namespace usrmgrDotNetProject
                 /*------------------------- Navette Collecte --------------------------------------*/
                 // MissionStatus
                 indice = Variable.vVariableBool.IndexOf(NavetteCollecte.MissionStatus.SendCom);
-                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Indice : " + indice);
                 if(Variable.vVariableBool[indice].GetVarValue())
                 {
-
+                    collectClient.MissionStatus(resquestMissionStatusCollect);
                     Variable.vVariableBool[indice].WriteVar(false);
                     SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Navette Collecte -- MissionStatus OK");
 
@@ -285,55 +302,7 @@ namespace usrmgrDotNetProject
                 }
             }
         }
-        /*
-        private void Init_Client_Lima()
-        {
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Init Client Lima");
-            //Collect
-            resquestMissionStatusCollect.MissionNumber = 0;
-            resquestMissionStatusCollect.MissionStatus = PostTapingCollectShuttleMissionStatusType.Ok;
-
-            resquestReportRunningModeCollect.DefaultCode = 0;
-            resquestReportRunningModeCollect.DefaultLabel = "?";
-            resquestReportRunningModeCollect.EquipmentCode = 0;
-            resquestReportRunningModeCollect.RunningMode = PostTapingCollectShuttleRunningModeType.Manual;
-            resquestReportRunningModeCollect.RunningModeDateTime = DateTime.Now;
-            
-            requestConveyorNumberCollect.TapingOutputConveyorNumber = 0;
-
-            //Evacuation
-            resquestMissionStatusEvacuation.MissionNumber = 0;
-            resquestMissionStatusEvacuation.MissionStatus = PostTapingEvacuationShuttleMissionStatusType.Ok;
-
-            resquestReportRunningModeEvacuation.DefaultCode = 0;
-            resquestReportRunningModeEvacuation.DefaultLabel = "?";
-            resquestReportRunningModeEvacuation.EquipmentCode = 0;
-            resquestReportRunningModeEvacuation.RunningMode = PostTapingEvacuationShuttleRunningModeType.Manual;
-            resquestReportRunningModeEvacuation.RunningModeDateTime = DateTime.Now;
-        }
-
-        private void Client_Lima()
-        {
-            
-
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collect");
-            collectClient.MissionStatus(resquestMissionStatusCollect);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "MissionStatus OK");
-
-            collectClient.ReportRunningMode(resquestReportRunningModeCollect);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "ReportRunningMode OK");
-
-            collectClient.TapingOutputConveyorNumber(requestConveyorNumberCollect);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "ConveyorNumber OK");
-
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Evacuation");
-            evacuationClient.MissionStatus(resquestMissionStatusEvacuation);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "MissionStatus OK");
-
-            evacuationClient.ReportRunningMode(resquestReportRunningModeEvacuation);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "ReportRunningMode OK");
-        }
-        */
+       
         public void Dispose()
         {
             // Close the ServiceHost.

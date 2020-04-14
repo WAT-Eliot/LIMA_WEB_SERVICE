@@ -19,7 +19,6 @@ namespace Web_Service_LIMA
         public void LayerEvacuation(PostTapingEvacuationShuttleLayerEvacuationRequest request)
         {
             //log.Info(request.MissionNumber + " " + request.LayerDestination + " " + request.SorterOutputConveyorNumber);
-            
         }
     }
 }
