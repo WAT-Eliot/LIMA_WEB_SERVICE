@@ -48,7 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
-    <Compile Include="CollectBusiness.cs" />
     <Compile Include="CollectService.svc.cs">
       <DependentUpon>CollectService.svc</DependentUpon>
     </Compile>
