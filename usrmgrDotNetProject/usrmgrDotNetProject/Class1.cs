@@ -4,8 +4,8 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading;
-//using CollectShuttleToMx;
 using usrmgrDotNetProject.CollectShuttleToMx;
+using usrmgrDotNetProject.EvacuationShuttleToMx;
 using Web_Service_LIMA;
 /*
 using usrmgrDotNetProject.CollectShuttleToMx;
@@ -64,7 +64,7 @@ namespace usrmgrDotNetProject
         
         PostTapingCollectShuttleMissionStatusRequest resquestMissionStatusCollect = new PostTapingCollectShuttleMissionStatusRequest
         {
-            MissionNumber = 123,
+            MissionNumber = 0,
             MissionStatus = PostTapingCollectShuttleMissionStatusType.Ok,
         };
 
@@ -81,6 +81,25 @@ namespace usrmgrDotNetProject
         {
             TapingOutputConveyorNumber = 0,
         };
+
+        //Evacuation
+        internal static InterfacesPostTapingEvacuationShuttleToMx01Client evacuationClient;
+
+        PostTapingEvacuationShuttleMissionStatusRequest resquestMissionStatusEvacuation = new PostTapingEvacuationShuttleMissionStatusRequest
+        {
+            MissionNumber = 0,
+            MissionStatus = PostTapingEvacuationShuttleMissionStatusType.Ok,
+        };
+
+        PostTapingEvacuationShuttleReportRunningModeRequest resquestReportRunningModeEvacuation = new PostTapingEvacuationShuttleReportRunningModeRequest
+        {
+            DefaultCode = 0,
+            DefaultLabel = "?",
+            EquipmentCode = 0,
+            RunningMode = PostTapingEvacuationShuttleRunningModeType.Manual,
+            RunningModeDateTime = DateTime.Now,
+        };
+
 
         /*----------------------------------------------- Fin Client ------------------------------------*/
 
@@ -122,21 +141,35 @@ namespace usrmgrDotNetProject
             Service_Evacuation.Start(hostEvacuation);
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Service Web Evacuation démarrée !");
 
-            //////////////////
+            /*----------------------------------- Web Service Création Client ----------------------------------------*/
+            // Class constructeur
+            System.ServiceModel.Channels.Binding binding = new System.ServiceModel.BasicHttpBinding();
+            // Collecte
             try
-            { // Class constructeur
-                System.ServiceModel.Channels.Binding Test = new System.ServiceModel.BasicHttpBinding();
+            { 
                 EndpointAddress address = new EndpointAddress("http://wstest.groupeliebot.fr/Mx/Lima1/Mx.Broker.Lima.Endpoint/Interface/InterfacesPostTapingCollectShuttleToMx0101.svc");
-                collectClient = new InterfacesPostTapingCollectShuttleToMx01Client(Test,address);
+                collectClient = new InterfacesPostTapingCollectShuttleToMx01Client(binding, address);
             }
 
             catch (Exception e)
             {
-                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, e.Message);
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collecte : " + e.Message);
             }
 
-            collectClient.MissionStatus(resquestMissionStatusCollect);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Mission Status !");
+            try
+            {
+                EndpointAddress address = new EndpointAddress("http://wstest.groupeliebot.fr/Mx/Lima1/Mx.Broker.Lima.Endpoint/Interface/InterfacesPostTapingEvacuationShuttleToMx0101.svc");
+                evacuationClient = new InterfacesPostTapingEvacuationShuttleToMx01Client(binding, address);
+            }
+
+            catch (Exception e)
+            {
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Evacuation : " + e.Message);
+            }
+
+
+            /*---------------------------------- Fin Web Service Création Client ---------------------------------------*/
+
         }
 
         //Class diferente
@@ -252,9 +285,10 @@ namespace usrmgrDotNetProject
                 }
 
                 /*--------------------------------------------------- Action sur changement de valeur ----------------------------------------------------*/
-                int indice;
+            int indice;
                 /*------------------------- Navette Collecte --------------------------------------*/
                 //Class
+
                 // MissionStatus
                 indice = Variable.vVariableBool.IndexOf(NavetteCollecte.MissionStatus.SendCom);
                 if(Variable.vVariableBool[indice].GetVarValue())
@@ -350,6 +384,7 @@ namespace usrmgrDotNetProject
                     try
                     {
                         collectClient.TapingOutputConveyorNumber(requestConveyorNumberCollect);
+                        indice = Variable.vVariableBool.IndexOf(NavetteCollecte.TapingOutputConveyorNumber.SendCom);
                         Variable.vVariableBool[indice].WriteVar(false);
                         SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collecte -- Taping Output Conveyor Number : OK");
                     }
@@ -366,20 +401,84 @@ namespace usrmgrDotNetProject
                 indice = Variable.vVariableBool.IndexOf(NavetteEvacuation.MissionStatus.SendCom);
                 if (Variable.vVariableBool[indice].GetVarValue())
                 {
+                    indice = Variable.vVariableAna.IndexOf(NavetteEvacuation.MissionStatus.MissionNumber);
+                    resquestMissionStatusEvacuation.MissionNumber = Convert.ToInt32(Variable.vVariableAna[indice].GetVarValue());
 
-                    Variable.vVariableBool[indice].WriteVar(false);
-                    SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Navette Evacuation -- MissionStatus OK");
+                    indice = Variable.vVariableBool.IndexOf(NavetteEvacuation.MissionStatus.MissionStatus);
+                    if (Variable.vVariableBool[indice].GetVarValue())
+                    {
+                        resquestMissionStatusEvacuation.MissionStatus = PostTapingEvacuationShuttleMissionStatusType.Ok;
+                    }
+                    else
+                    {
+                        resquestMissionStatusEvacuation.MissionStatus = PostTapingEvacuationShuttleMissionStatusType.Nok;
+                    }
 
+                    try
+                    {
+                        evacuationClient.MissionStatus(resquestMissionStatusEvacuation);
+                        indice = Variable.vVariableBool.IndexOf(NavetteEvacuation.MissionStatus.SendCom);
+                        Variable.vVariableBool[indice].WriteVar(false);
+                        SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Evacuation -- Mission Status : OK");
+                    }
+                    catch (Exception e)
+                    {
+                        SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Warning, "Evacuation -- Mission Status : " + e.Message);
+                    }
                 }
 
                 // ReportRunningMode
                 indice = Variable.vVariableBool.IndexOf(NavetteEvacuation.ReportRunningMode.SendCom);
                 if (Variable.vVariableBool[indice].GetVarValue())
                 {
+                    indice = Variable.vVariableAna.IndexOf(NavetteEvacuation.ReportRunningMode.DefaultCode);
+                    resquestReportRunningModeEvacuation.DefaultCode = Convert.ToInt32(Variable.vVariableAna[indice].GetVarValue());
 
-                    Variable.vVariableBool[indice].WriteVar(false);
-                    SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Navette Evacuation -- ReportRunningMode OK");
+                    indice = Variable.vVariableString.IndexOf(NavetteEvacuation.ReportRunningMode.DefaultLabel);
+                    resquestReportRunningModeEvacuation.DefaultLabel = Variable.vVariableString[indice].GetVarValue();
 
+                    indice = Variable.vVariableAna.IndexOf(NavetteEvacuation.ReportRunningMode.EquipmentCode);
+                    resquestReportRunningModeEvacuation.EquipmentCode = Convert.ToInt32(Variable.vVariableAna[indice].GetVarValue());
+
+                    indice = Variable.vVariableAna.IndexOf(NavetteEvacuation.ReportRunningMode.RunningMode);
+                    if (Variable.vVariableAna[indice].GetVarValue() == 0)
+                    {
+                        resquestReportRunningModeEvacuation.RunningMode = PostTapingEvacuationShuttleRunningModeType.Default;
+                    }
+                    else if (Variable.vVariableAna[indice].GetVarValue() == 1)
+                    {
+                        resquestReportRunningModeEvacuation.RunningMode = PostTapingEvacuationShuttleRunningModeType.Manual;
+                    }
+                    else if (Variable.vVariableAna[indice].GetVarValue() == 2)
+                    {
+                        resquestReportRunningModeEvacuation.RunningMode = PostTapingEvacuationShuttleRunningModeType.MissionInProgress;
+                    }
+                    else if (Variable.vVariableAna[indice].GetVarValue() == 3)
+                    {
+                        resquestReportRunningModeEvacuation.RunningMode = PostTapingEvacuationShuttleRunningModeType.Rest;
+                    }
+
+                    indice = Variable.vVariableString.IndexOf(NavetteEvacuation.ReportRunningMode.RunningModeDate);
+                    string sDate = Variable.vVariableString[indice].GetVarValue();
+                    SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Date : " + sDate);
+                    indice = Variable.vVariableString.IndexOf(NavetteEvacuation.ReportRunningMode.RunningModeTime);
+                    string sTime = Variable.vVariableString[indice].GetVarValue();
+                    SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Time : " + sTime);
+                    DateTime Date = new DateTime();
+
+                    resquestReportRunningModeEvacuation.RunningModeDateTime = Date;
+
+                    try
+                    {
+                        evacuationClient.ReportRunningMode(resquestReportRunningModeEvacuation);
+                        indice = Variable.vVariableBool.IndexOf(NavetteEvacuation.ReportRunningMode.SendCom);
+                        Variable.vVariableBool[indice].WriteVar(false);
+                        SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Evacuation -- Report Running Mode : OK");
+                    }
+                    catch (Exception e)
+                    {
+                        SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Warning, "Evacuation -- Report Running Mode : " + e.Message);
+                    }
                 }
 
                 /*--------------------------------------------------- Fin action sur changement de valeur ----------------------------------------------------*/
