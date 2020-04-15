@@ -8,7 +8,7 @@ using SvMgrObjects;
 namespace usrmgrDotNetProject
 {
 
-    class Variable
+    public class Variable
     {
         public static List<TypeBool> vVariableBool = new List<TypeBool>();
         public static List<TypeAna> vVariableAna = new List<TypeAna>();
@@ -23,7 +23,7 @@ namespace usrmgrDotNetProject
             public TypeAna MissionNumber;
         }
 
-        public struct sLayerDestionation
+        public struct sLayerDestination
         {
             public TypeBool ReceiveCom;
             public TypeAna MissionNumber;
@@ -59,7 +59,7 @@ namespace usrmgrDotNetProject
         public struct sNavetteCollecte
         {
             public sTapingOutputConveyorNumber TapingOutputConveyorNumber;
-            public sLayerDestionation LayerDestination;
+            public sLayerDestination LayerDestination;
             public sMissionStatus MissionStatus;
             public sReportRunningMode ReportRunningMode;
         }
@@ -114,7 +114,7 @@ namespace usrmgrDotNetProject
         }
     }
 
-    class TypeBool : Variable
+    public class TypeBool : Variable
     {
 
 
@@ -164,7 +164,7 @@ namespace usrmgrDotNetProject
         }
     }
 
-    class TypeAna : Variable
+    public class TypeAna : Variable
     {
         private double m_value;
 
@@ -204,7 +204,6 @@ namespace usrmgrDotNetProject
             varValue.vt = SvMgrEnums.VarType.svmgr_vtANA;
             varValue.Ana = value;
 
-
             if (varValue.Ana != m_value)
             {
                 SvMgrAPI.VarWrite(m_name, varValue, 0);
@@ -212,7 +211,7 @@ namespace usrmgrDotNetProject
         }
     }
 
-    class TypeString : Variable
+    public class TypeString : Variable
     {
 
         private string m_value;

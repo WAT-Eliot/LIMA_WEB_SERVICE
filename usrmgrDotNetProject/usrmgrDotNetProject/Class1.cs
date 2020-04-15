@@ -14,7 +14,7 @@ using usrmgrDotNetProject.EvacuationShuttleToMx;
 
 namespace usrmgrDotNetProject
 {
-    public class Main:IDisposable 
+    public class Main : IDisposable
     {
         /*
         InterfacesPostTapingCollectShuttleToMx01Client collectClient = new InterfacesPostTapingCollectShuttleToMx01Client();
@@ -26,13 +26,18 @@ namespace usrmgrDotNetProject
         PostTapingEvacuationShuttleMissionStatusRequest resquestMissionStatusEvacuation = new PostTapingEvacuationShuttleMissionStatusRequest();
         PostTapingEvacuationShuttleReportRunningModeRequest resquestReportRunningModeEvacuation = new PostTapingEvacuationShuttleReportRunningModeRequest();
         */
-        private static string tempPrefixeMx = "Mx";
-        private string tempPrefixeCollecte = tempPrefixeMx + ".NavetteCollecte";
-        private string tempPrefixeEvacuation = tempPrefixeMx + ".NavetteEvacuation";
+        public static string tempPrefixeMx = "Mx";
+        public static string tempPrefixeCollecte = tempPrefixeMx + ".NavetteCollecte";
+        public static string tempPrefixeEvacuation = tempPrefixeMx + ".NavetteEvacuation";
+        public static string PrefixeCollecteEchange2 = tempPrefixeCollecte + ".Echange2";
 
+        public const uint CollectEchange1 = 0;
+        public const uint CollectEchange2 = 20;
+        public const uint CollectEchange3 = 40;
+        public const uint CollectEchange4 = 60;
 
-        Variable.sNavetteCollecte NavetteCollecte = new Variable.sNavetteCollecte();
-        Variable.sNavetteEvacuation NavetteEvacuation = new Variable.sNavetteEvacuation();
+        public static Variable.sNavetteCollecte NavetteCollecte = new Variable.sNavetteCollecte();
+        public static Variable.sNavetteEvacuation NavetteEvacuation = new Variable.sNavetteEvacuation();
 
         /*---------------------------- Web service ----------------------------------------------*/
         //Collect
@@ -50,17 +55,34 @@ namespace usrmgrDotNetProject
         ServiceHost hostEvacuation = new ServiceHost(typeof(EvacuationService), baseAddressEvacuation);
 
         Web_Service Service_Evacuation = new Web_Service();
-         
+
 
         /*------------------------------------------------ Client -----------------------------------*/
+        //Collecte
         internal static InterfacesPostTapingCollectShuttleToMx01Client collectClient;
 
-        //Collect
+        
         PostTapingCollectShuttleMissionStatusRequest resquestMissionStatusCollect = new PostTapingCollectShuttleMissionStatusRequest
         {
             MissionNumber = 123,
             MissionStatus = PostTapingCollectShuttleMissionStatusType.Ok,
         };
+
+        PostTapingCollectShuttleReportRunningModeRequest resquestReportRunningModeCollect = new PostTapingCollectShuttleReportRunningModeRequest
+        {
+            DefaultCode = 0,
+            DefaultLabel = "?",
+            EquipmentCode = 0,
+            RunningMode = PostTapingCollectShuttleRunningModeType.Manual,
+            RunningModeDateTime = DateTime.Now,
+        };
+
+        PostTapingCollectShuttleTapingOutputConveyorRequest requestConveyorNumberCollect = new PostTapingCollectShuttleTapingOutputConveyorRequest
+        {
+            TapingOutputConveyorNumber = 0,
+        };
+
+        /*----------------------------------------------- Fin Client ------------------------------------*/
 
         public Main()
         {
@@ -77,10 +99,10 @@ namespace usrmgrDotNetProject
 
             /*------------------------ Navette Collecte -----------------------------------------------------*/
             
-            CollecteEchange1(0);
-            CollecteEchange2(20);
-            CollecteEchange3(40);
-            CollecteEchange4(60);
+            CollecteEchange1(CollectEchange1);
+            CollecteEchange2(CollectEchange2);
+            CollecteEchange3(CollectEchange3);
+            CollecteEchange4(CollectEchange4);
 
             /*------------------------ Navette Evacuation -----------------------------------------------------*/
             
@@ -102,7 +124,7 @@ namespace usrmgrDotNetProject
 
             //////////////////
             try
-            {
+            { // Class constructeur
                 System.ServiceModel.Channels.Binding Test = new System.ServiceModel.BasicHttpBinding();
                 EndpointAddress address = new EndpointAddress("http://wstest.groupeliebot.fr/Mx/Lima1/Mx.Broker.Lima.Endpoint/Interface/InterfacesPostTapingCollectShuttleToMx0101.svc");
                 collectClient = new InterfacesPostTapingCollectShuttleToMx01Client(Test,address);
@@ -117,6 +139,7 @@ namespace usrmgrDotNetProject
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Mission Status !");
         }
 
+        //Class diferente
         public void CollecteEchange1(uint nbr)
         {
             // TapingOutputConveyorNumber
@@ -129,11 +152,11 @@ namespace usrmgrDotNetProject
         private void CollecteEchange2(uint nbr)
         {
             // LayerDestionation
-            string tempPrefixe = tempPrefixeCollecte + ".Echange2";
-            NavetteCollecte.LayerDestination.ReceiveCom = new TypeBool(tempPrefixe + ".ReceiveCom", nbr + 1, false);
-            NavetteCollecte.LayerDestination.MissionNumber = new TypeAna(tempPrefixe + ".MissionNumber", nbr + 2, 0);
-            NavetteCollecte.LayerDestination.SorterInputConveyorNumber = new TypeAna(tempPrefixe + ".SorterInputConveyorNumber", nbr + 3, 0);
-            NavetteCollecte.LayerDestination.TapingOutputConveyorNumber = new TypeAna(tempPrefixe + ".TapingOutputConveyor", nbr + 4, 0);
+
+            NavetteCollecte.LayerDestination.ReceiveCom = new TypeBool(PrefixeCollecteEchange2 + ".ReceiveCom", nbr + 1, false);
+            NavetteCollecte.LayerDestination.MissionNumber = new TypeAna(PrefixeCollecteEchange2 + ".MissionNumber", nbr + 2, 0);
+            NavetteCollecte.LayerDestination.SorterInputConveyorNumber = new TypeAna(PrefixeCollecteEchange2 + ".SorterInputConveyorNumber", nbr + 3, 0);
+            NavetteCollecte.LayerDestination.TapingOutputConveyorNumber = new TypeAna(PrefixeCollecteEchange2 + ".TapingOutputConveyor", nbr + 4, 0);
         }
 
         private void CollecteEchange3(uint nbr)
@@ -231,13 +254,34 @@ namespace usrmgrDotNetProject
                 /*--------------------------------------------------- Action sur changement de valeur ----------------------------------------------------*/
                 int indice;
                 /*------------------------- Navette Collecte --------------------------------------*/
+                //Class
                 // MissionStatus
                 indice = Variable.vVariableBool.IndexOf(NavetteCollecte.MissionStatus.SendCom);
                 if(Variable.vVariableBool[indice].GetVarValue())
                 {
-                    collectClient.MissionStatus(resquestMissionStatusCollect);
-                    Variable.vVariableBool[indice].WriteVar(false);
-                    SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Navette Collecte -- MissionStatus OK");
+                    indice = Variable.vVariableAna.IndexOf(NavetteCollecte.MissionStatus.MissionNumber);
+                    resquestMissionStatusCollect.MissionNumber = Convert.ToInt32(Variable.vVariableAna[indice].GetVarValue());
+
+                    indice = Variable.vVariableBool.IndexOf(NavetteCollecte.MissionStatus.SendCom);
+                    if (Variable.vVariableBool[indice].GetVarValue())
+                    {
+                        resquestMissionStatusCollect.MissionStatus = PostTapingCollectShuttleMissionStatusType.Ok;
+                    }
+                    else
+                    {
+                        resquestMissionStatusCollect.MissionStatus = PostTapingCollectShuttleMissionStatusType.Nok;
+                    }
+
+                    try
+                    {
+                        collectClient.MissionStatus(resquestMissionStatusCollect);
+                        indice = Variable.vVariableBool.IndexOf(NavetteCollecte.MissionStatus.SendCom);
+                        Variable.vVariableBool[indice].WriteVar(false);
+                        SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collecte -- MissionStatus : OK");
+                    }catch(Exception e)
+                    {
+                        SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Warning, "Collecte -- Mission Status : " + e.Message);
+                    }
 
                 }
                 
@@ -245,9 +289,54 @@ namespace usrmgrDotNetProject
                 indice = Variable.vVariableBool.IndexOf(NavetteCollecte.ReportRunningMode.SendCom);
                 if (Variable.vVariableBool[indice].GetVarValue())
                 {
+                    indice = Variable.vVariableAna.IndexOf(NavetteCollecte.ReportRunningMode.DefaultCode);
+                    resquestReportRunningModeCollect.DefaultCode = Convert.ToInt32(Variable.vVariableAna[indice].GetVarValue());
 
-                    Variable.vVariableBool[indice].WriteVar(false);
-                    SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Navette Collecte -- ReportRunningMode OK");
+                    indice = Variable.vVariableString.IndexOf(NavetteCollecte.ReportRunningMode.DefaultLabel);
+                    resquestReportRunningModeCollect.DefaultLabel = Variable.vVariableString[indice].GetVarValue();
+
+                    indice = Variable.vVariableAna.IndexOf(NavetteCollecte.ReportRunningMode.EquipmentCode);
+                    resquestReportRunningModeCollect.EquipmentCode = Convert.ToInt32(Variable.vVariableAna[indice].GetVarValue());
+
+                    indice = Variable.vVariableAna.IndexOf(NavetteCollecte.ReportRunningMode.RunningMode);
+                    if (Variable.vVariableAna[indice].GetVarValue() == 0)
+                    {
+                        resquestReportRunningModeCollect.RunningMode = PostTapingCollectShuttleRunningModeType.Default;
+                    }
+                    else if (Variable.vVariableAna[indice].GetVarValue() == 1)
+                    {
+                        resquestReportRunningModeCollect.RunningMode = PostTapingCollectShuttleRunningModeType.Manual;
+                    }
+                    else if (Variable.vVariableAna[indice].GetVarValue() == 2)
+                    {
+                        resquestReportRunningModeCollect.RunningMode = PostTapingCollectShuttleRunningModeType.MissionInProgress;
+                    }
+                    else if (Variable.vVariableAna[indice].GetVarValue() == 3)
+                    {
+                        resquestReportRunningModeCollect.RunningMode = PostTapingCollectShuttleRunningModeType.Rest;
+                    }
+
+                    indice = Variable.vVariableString.IndexOf(NavetteCollecte.ReportRunningMode.RunningModeDate);
+                    string sDate = Variable.vVariableString[indice].GetVarValue(); 
+                    SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Date : " + sDate);
+                    indice = Variable.vVariableString.IndexOf(NavetteCollecte.ReportRunningMode.RunningModeTime);
+                    string sTime = Variable.vVariableString[indice].GetVarValue();
+                    SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Time : " + sTime);
+                    DateTime Date = new DateTime();
+                    
+                    resquestReportRunningModeCollect.RunningModeDateTime = Date;
+
+                    try
+                    {
+                        collectClient.ReportRunningMode(resquestReportRunningModeCollect);
+                        indice = Variable.vVariableBool.IndexOf(NavetteCollecte.ReportRunningMode.SendCom);
+                        Variable.vVariableBool[indice].WriteVar(false);
+                        SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collecte -- Report Running Mode : OK");
+                    }catch (Exception e)
+                    {
+                        SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Warning, "Collecte -- Report Running Mode : " + e.Message);
+                    }
+
 
                 }
 
@@ -255,9 +344,19 @@ namespace usrmgrDotNetProject
                 indice = Variable.vVariableBool.IndexOf(NavetteCollecte.TapingOutputConveyorNumber.SendCom);
                 if (Variable.vVariableBool[indice].GetVarValue())
                 {
+                    indice = Variable.vVariableAna.IndexOf(NavetteCollecte.TapingOutputConveyorNumber.TapingOutputConveyorNumber);
+                    requestConveyorNumberCollect.TapingOutputConveyorNumber = Convert.ToInt32(Variable.vVariableAna[indice].GetVarValue());
 
-                    Variable.vVariableBool[indice].WriteVar(false);
-                    SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Navette Collecte -- TapingOutputConveyorNumber OK");
+                    try
+                    {
+                        collectClient.TapingOutputConveyorNumber(requestConveyorNumberCollect);
+                        Variable.vVariableBool[indice].WriteVar(false);
+                        SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collecte -- Taping Output Conveyor Number : OK");
+                    }
+                    catch (Exception e)
+                    {
+                        SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Warning, "Collecte -- Taping Output Conveyor Number : " + e.Message);
+                    }
 
                 }
 
@@ -284,28 +383,6 @@ namespace usrmgrDotNetProject
                 }
 
                 /*--------------------------------------------------- Fin action sur changement de valeur ----------------------------------------------------*/
-            }
-        }
-
-        private void SvMgrAPI_Boucle()
-        {
-            for (;;)
-            {
-                try
-                {
-                    if (Variable.vVariableBool[0].GetVarValue())
-                    {
-                        
-                    }
-
-
-                    Thread.Sleep(1000);
-
-                }
-                catch (Exception e)
-                {
-                    return;
-                }
             }
         }
        
