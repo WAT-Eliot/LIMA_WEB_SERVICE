@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
@@ -7,10 +8,7 @@ using System.Threading;
 using usrmgrDotNetProject.CollectShuttleToMx;
 using usrmgrDotNetProject.EvacuationShuttleToMx;
 using Web_Service_LIMA;
-/*
-using usrmgrDotNetProject.CollectShuttleToMx;
-using usrmgrDotNetProject.EvacuationShuttleToMx;
-*/
+using Microsoft.Win32;
 
 namespace usrmgrDotNetProject
 {
@@ -26,16 +24,16 @@ namespace usrmgrDotNetProject
         PostTapingEvacuationShuttleMissionStatusRequest resquestMissionStatusEvacuation = new PostTapingEvacuationShuttleMissionStatusRequest();
         PostTapingEvacuationShuttleReportRunningModeRequest resquestReportRunningModeEvacuation = new PostTapingEvacuationShuttleReportRunningModeRequest();
         */
-        public static string tempPrefixeMx = "Mx";
-        public static string tempPrefixeCollecte = tempPrefixeMx + ".NavetteCollecte";
-        public static string tempPrefixeEvacuation = tempPrefixeMx + ".NavetteEvacuation";
-        public static string PrefixeCollecteEchange1 = tempPrefixeCollecte + ".Echange1";
-        public static string PrefixeCollecteEchange2 = tempPrefixeCollecte + ".Echange2";
-        public static string PrefixeCollecteEchange3 = tempPrefixeCollecte + ".Echange3";
-        public static string PrefixeCollecteEchange4 = tempPrefixeCollecte + ".Echange4";
-        public static string PrefixeEvacuationEchange1 = tempPrefixeEvacuation + ".Echange1";
-        public static string PrefixeEvacuationEchange2 = tempPrefixeEvacuation + ".Echange2";
-        public static string PrefixeEvacuationEchange3 = tempPrefixeEvacuation + ".Echange3";
+        public static string PrefixeMx = "Mx";
+        public static string PrefixeCollecte = PrefixeMx + ".NavetteCollecte";
+        public static string PrefixeEvacuation = PrefixeMx + ".NavetteEvacuation";
+        public static string PrefixeCollecteEchange1 = PrefixeCollecte + ".Echange1";
+        public static string PrefixeCollecteEchange2 = PrefixeCollecte + ".Echange2";
+        public static string PrefixeCollecteEchange3 = PrefixeCollecte + ".Echange3";
+        public static string PrefixeCollecteEchange4 = PrefixeCollecte + ".Echange4";
+        public static string PrefixeEvacuationEchange1 = PrefixeEvacuation + ".Echange1";
+        public static string PrefixeEvacuationEchange2 = PrefixeEvacuation + ".Echange2";
+        public static string PrefixeEvacuationEchange3 = PrefixeEvacuation + ".Echange3";
 
         public const uint CollectEchange1 = 0;
         public const uint CollectEchange2 = 20;
@@ -48,23 +46,30 @@ namespace usrmgrDotNetProject
         public const uint EvacEchange3 = 140;
         public const uint EvacVarCommun = 160;
 
+        private string urlServeurCollect;
+        private string urlServeurEvacuation; 
+        private string urlClientCollect;
+        private string urlClientEvacuation;
+
         public static Variable.sNavetteCollecte NavetteCollecte = new Variable.sNavetteCollecte();
         public static Variable.sNavetteEvacuation NavetteEvacuation = new Variable.sNavetteEvacuation();
 
         /*---------------------------- Web service ----------------------------------------------*/
         //Collect
         //static Uri baseAddressCollect = new Uri("http://localhost:8080/InterfacesMxToPostTapingCollectShuttle01");
-        static Uri baseAddressCollect = new Uri("http://2.7.106.131:8080/InterfacesMxToPostTapingCollectShuttle01");
+        //static Uri baseAddressCollect = new Uri("http://2.7.106.131:8080/InterfacesMxToPostTapingCollectShuttle01");
+        //static Uri baseAddressCollect = new Uri(urlServeurCollect);
         // Create the ServiceHost.
-        ServiceHost hostCollect = new ServiceHost(typeof(CollectService), baseAddressCollect);
+        ServiceHost hostCollect;// = new ServiceHost(typeof(CollectService), baseAddressCollect);
 
         Web_Service Service_Collect = new Web_Service();
-        
+
         // Evacuation
         //static Uri baseAddressEvacuation = new Uri("http://localhost:8080/InterfacesMxToPostTapingEvacuationShuttle01");
-        static Uri baseAddressEvacuation = new Uri("http://2.7.106.131:8080/InterfacesMxToPostTapingEvacuationShuttle01");
+        //static Uri baseAddressEvacuation = new Uri("http://2.7.106.131:8080/InterfacesMxToPostTapingEvacuationShuttle01");
+        //static Uri baseAddressEvacuation = new Uri(urlServeurEvacuation);
         // Create the ServiceHost.
-        ServiceHost hostEvacuation = new ServiceHost(typeof(EvacuationService), baseAddressEvacuation);
+        ServiceHost hostEvacuation;// = new ServiceHost(typeof(EvacuationService), baseAddressEvacuation);
 
         Web_Service Service_Evacuation = new Web_Service();
 
@@ -124,7 +129,7 @@ namespace usrmgrDotNetProject
         private void SvMgrAPI_StartProject()
         {
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "DLL démarrée");
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 14/04/2020 18H00");
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Version : 16/04/2020 08H30");
 
             /*----------------------------- Déclaration des variables ----------------------------------------*/
 
@@ -144,41 +149,73 @@ namespace usrmgrDotNetProject
             VarEvacuationCommun(EvacVarCommun);
 
             SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Il y a : " + (Variable.vVariableBool.Count() + Variable.vVariableAna.Count() + Variable.vVariableString.Count()) + " variables dont " + Variable.vVariableBool.Count() + " booleans, " + Variable.vVariableAna.Count() + " valeurs ana, " + Variable.vVariableString.Count() + " chaines de caractere.");
+            /*----------------------------- Ouverture fichier URL Serveur ---------------------------------*/
+            try
+            {
+                urlServeurCollect = File.ReadAllText(@"C:/ARC Informatique/PcVue 12/Bin/WAT/urlServeurCollect.txt");
+                NavetteCollecte.urlServeur.WriteVar(urlServeurCollect);
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "URL Serveur Collect : " + urlServeurCollect);
 
-            /*----------------------------- Fin Déclaration des variables ----------------------------------------*/
+                urlServeurEvacuation = File.ReadAllText(@"C:/ARC Informatique/PcVue 12/Bin/WAT/urlServeurEvacuation.txt");
+                NavetteEvacuation.urlServeur.WriteVar(urlServeurEvacuation);
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "URL Serveur Evacuation : " + urlServeurEvacuation);
 
+                urlClientCollect = File.ReadAllText(@"C:/ARC Informatique/PcVue 12/Bin/WAT/urlClientCollect.txt");
+                NavetteCollecte.urlClient.WriteVar(urlClientCollect);
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "URL Client Collect : " + urlClientCollect);
 
-            Service_Collect.Start(hostCollect);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Service Web Collect démarrée !");
+                urlClientEvacuation = File.ReadAllText(@"C:/ARC Informatique/PcVue 12/Bin/WAT/urlClientEvacuation.txt");
+                NavetteEvacuation.urlClient.WriteVar(urlClientEvacuation);
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "URL Client Evacuation : " + urlClientEvacuation);
+            }
+            catch(Exception e)
+            {
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Fatal, "Gestion fichier -- " + e.Message);
+            }
 
+            /*----------------------------- Web Service Création Serveur ----------------------------------------*/
+            //Collecte
+            try
+            {
+                Uri baseAddressCollect = new Uri(urlServeurCollect);
+                hostCollect = new ServiceHost(typeof(CollectService), baseAddressCollect);
 
-            Service_Evacuation.Start(hostEvacuation);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Service Web Evacuation démarrée !");
+                Service_Collect.Start(hostCollect);
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Service Web Serveur -- Collect démarré");
+
+                //Evacuation
+                Uri baseAddressEvacuation = new Uri(urlServeurEvacuation);
+                hostEvacuation = new ServiceHost(typeof(EvacuationService), baseAddressEvacuation);
+
+                Service_Evacuation.Start(hostEvacuation);
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Service Web Serveur -- Evacuation démarré");
+            }
+            catch(Exception e)
+            {
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Fatal, "Service Web Serveur -- " + e.Message);
+            }
 
             /*----------------------------------- Web Service Création Client ----------------------------------------*/
             // Class constructeur
+
             System.ServiceModel.Channels.Binding binding = new System.ServiceModel.BasicHttpBinding();
             // Collecte
             try
-            { 
-                EndpointAddress address = new EndpointAddress("http://wstest.groupeliebot.fr/Mx/Lima1/Mx.Broker.Lima.Endpoint/Interface/InterfacesPostTapingCollectShuttleToMx0101.svc");
+            {
+                //EndpointAddress address = new EndpointAddress("http://wstest.groupeliebot.fr/Mx/Lima1/Mx.Broker.Lima.Endpoint/Interface/InterfacesPostTapingCollectShuttleToMx0101.svc");
+                EndpointAddress address = new EndpointAddress(urlClientCollect);
                 collectClient = new InterfacesPostTapingCollectShuttleToMx01Client(binding, address);
-            }
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Service Web Client -- Collecte créé");
 
-            catch (Exception e)
-            {
-                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collecte : " + e.Message);
-            }
-
-            try
-            {
-                EndpointAddress address = new EndpointAddress("http://wstest.groupeliebot.fr/Mx/Lima1/Mx.Broker.Lima.Endpoint/Interface/InterfacesPostTapingEvacuationShuttleToMx0101.svc");
+                //EndpointAddress address = new EndpointAddress("http://wstest.groupeliebot.fr/Mx/Lima1/Mx.Broker.Lima.Endpoint/Interface/InterfacesPostTapingEvacuationShuttleToMx0101.svc");
+                address = new EndpointAddress(urlClientEvacuation);
                 evacuationClient = new InterfacesPostTapingEvacuationShuttleToMx01Client(binding, address);
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Service Web Client -- Evacuation créé");
             }
 
             catch (Exception e)
             {
-                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Evacuation : " + e.Message);
+                SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Fatal, "Service Web Client -- " + e.Message);
             }
 
 
@@ -227,8 +264,9 @@ namespace usrmgrDotNetProject
 
         private void VarCollecteCommun(uint nbr)
         {
-            NavetteCollecte.ErreurCom = new TypeBool(tempPrefixeCollecte + ".ErreurCom", nbr + 1, false);
-            NavetteCollecte.Test = new TypeAna("Test", nbr + 2, 0);
+            NavetteCollecte.ErreurCom = new TypeBool(PrefixeCollecte + ".ErreurCom", nbr + 1, false);
+            NavetteCollecte.urlServeur = new TypeString(PrefixeCollecte + ".urlServeur", nbr + 2, "");
+            NavetteCollecte.urlClient = new TypeString(PrefixeCollecte + ".urlClient", nbr + 3, "");
         }
 
         private void EvacuationEchange1(uint nbr)
@@ -262,7 +300,9 @@ namespace usrmgrDotNetProject
 
         private void VarEvacuationCommun(uint nbr)
         {
-            NavetteEvacuation.ErreurCom = new TypeBool(tempPrefixeEvacuation + ".ErreurCom", nbr + 1, false);
+            NavetteEvacuation.ErreurCom = new TypeBool(PrefixeEvacuation + ".ErreurCom", nbr + 1, false);
+            NavetteEvacuation.urlServeur = new TypeString(PrefixeEvacuation + ".urlServeur", nbr + 2, "");
+            NavetteEvacuation.urlClient = new TypeString(PrefixeEvacuation + ".urlClient", nbr + 3, "");
         }
 
         private void SvMgrAPI_OnDataChange2(SvMgrObjects.VariableResult[] ArrayVarResult)
@@ -328,8 +368,6 @@ namespace usrmgrDotNetProject
                     try
                     {
                         collectClient.MissionStatus(resquestMissionStatusCollect);
-                        indice = Variable.vVariableBool.IndexOf(NavetteCollecte.MissionStatus.SendCom);
-                        Variable.vVariableBool[indice].WriteVar(false);
                         SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collecte -- MissionStatus : OK");
                     }catch(Exception e)
                     {
@@ -337,6 +375,8 @@ namespace usrmgrDotNetProject
                         Variable.vVariableBool[indice].WriteVar(true);
                         SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Warning, "Collecte -- Mission Status : " + e.Message);
                     }
+                    indice = Variable.vVariableBool.IndexOf(NavetteCollecte.MissionStatus.SendCom);
+                    Variable.vVariableBool[indice].WriteVar(false);
 
                 }
                 
@@ -376,8 +416,6 @@ namespace usrmgrDotNetProject
                     try
                     {
                         collectClient.ReportRunningMode(resquestReportRunningModeCollect);
-                        indice = Variable.vVariableBool.IndexOf(NavetteCollecte.ReportRunningMode.SendCom);
-                        Variable.vVariableBool[indice].WriteVar(false);
                         SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collecte -- Report Running Mode : OK");
                     }catch (Exception e)
                     {
@@ -385,8 +423,8 @@ namespace usrmgrDotNetProject
                         Variable.vVariableBool[indice].WriteVar(true);
                         SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Warning, "Collecte -- Report Running Mode : " + e.Message);
                     }
-
-
+                    indice = Variable.vVariableBool.IndexOf(NavetteCollecte.ReportRunningMode.SendCom);
+                    Variable.vVariableBool[indice].WriteVar(false);
                 }
 
                 // TapingOutputConveyorNumber
@@ -399,8 +437,6 @@ namespace usrmgrDotNetProject
                     try
                     {
                         collectClient.TapingOutputConveyorNumber(requestConveyorNumberCollect);
-                        indice = Variable.vVariableBool.IndexOf(NavetteCollecte.TapingOutputConveyorNumber.SendCom);
-                        Variable.vVariableBool[indice].WriteVar(false);
                         SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collecte -- Taping Output Conveyor Number : OK");
                     }
                     catch (Exception e)
@@ -409,11 +445,12 @@ namespace usrmgrDotNetProject
                         Variable.vVariableBool[indice].WriteVar(true);
                         SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Warning, "Collecte -- Taping Output Conveyor Number : " + e.Message);
                     }
-
+                    indice = Variable.vVariableBool.IndexOf(NavetteCollecte.TapingOutputConveyorNumber.SendCom);
+                    Variable.vVariableBool[indice].WriteVar(false);
                 }
 
                 /*------------------------- Navette Evacuation --------------------------------------*/
-                
+
                 // MissionStatus
                 indice = Variable.vVariableBool.IndexOf(NavetteEvacuation.MissionStatus.SendCom);
                 if (Variable.vVariableBool[indice].GetVarValue())
@@ -434,8 +471,6 @@ namespace usrmgrDotNetProject
                     try
                     {
                         evacuationClient.MissionStatus(resquestMissionStatusEvacuation);
-                        indice = Variable.vVariableBool.IndexOf(NavetteEvacuation.MissionStatus.SendCom);
-                        Variable.vVariableBool[indice].WriteVar(false);
                         SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Evacuation -- Mission Status : OK");
                     }
                     catch (Exception e)
@@ -444,6 +479,8 @@ namespace usrmgrDotNetProject
                         Variable.vVariableBool[indice].WriteVar(true);
                         SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Warning, "Evacuation -- Mission Status : " + e.Message);
                     }
+                    indice = Variable.vVariableBool.IndexOf(NavetteEvacuation.MissionStatus.SendCom);
+                    Variable.vVariableBool[indice].WriteVar(false);
                 }
 
                 // ReportRunningMode
@@ -482,8 +519,6 @@ namespace usrmgrDotNetProject
                     try
                     {
                         evacuationClient.ReportRunningMode(resquestReportRunningModeEvacuation);
-                        indice = Variable.vVariableBool.IndexOf(NavetteEvacuation.ReportRunningMode.SendCom);
-                        Variable.vVariableBool[indice].WriteVar(false);
                         SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Evacuation -- Report Running Mode : OK");
                     }
                     catch (Exception e)
@@ -492,6 +527,9 @@ namespace usrmgrDotNetProject
                         Variable.vVariableBool[indice].WriteVar(true);
                         SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Warning, "Evacuation -- Report Running Mode : " + e.Message);
                     }
+                    indice = Variable.vVariableBool.IndexOf(NavetteEvacuation.ReportRunningMode.SendCom);
+                    Variable.vVariableBool[indice].WriteVar(false);
+
                 }
 
                 /*--------------------------------------------------- Fin action sur changement de valeur ----------------------------------------------------*/

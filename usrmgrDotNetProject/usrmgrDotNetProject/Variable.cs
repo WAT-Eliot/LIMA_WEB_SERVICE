@@ -63,7 +63,8 @@ namespace usrmgrDotNetProject
             public sMissionStatus MissionStatus;
             public sReportRunningMode ReportRunningMode;
             public TypeBool ErreurCom;
-            public TypeAna Test;
+            public TypeString urlServeur;
+            public TypeString urlClient;
         }
 
         public struct sNavetteEvacuation
@@ -72,6 +73,8 @@ namespace usrmgrDotNetProject
             public sMissionStatus MissionStatus;
             public sReportRunningMode ReportRunningMode;
             public TypeBool ErreurCom;
+            public TypeString urlServeur;
+            public TypeString urlClient;
         }
 
         public Variable()
