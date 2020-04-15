@@ -13,19 +13,9 @@ namespace Web_Service_LIMA
     // REMARQUE : pour lancer le client test WCF afin de tester ce service, sélectionnez CollectService.svc ou CollectService.svc.cs dans l'Explorateur de solutions et démarrez le débogage.
     public class CollectService : collectns.IInterfacesMxToPostTapingCollectShuttle01
     {
-
         public void LayerDestination(PostTapingCollectShuttleLayerDestinationRequest request)
         {
-            /*
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collect -- MissionNumber : " + request.MissionNumber);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collect -- SorterInputConveyorNumber : " + request.SorterInputConveyorNumber);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collect -- TapingOutputConveyorNumber : " + request.TapingOutputConveyorNumber);
-            */
-
-            int indice = Variable.vVariableBool.IndexOf(Main.NavetteCollecte.LayerDestination.ReceiveCom);
-            Variable.vVariableBool[indice].WriteVar(true);
-
-            indice = Variable.vVariableAna.IndexOf(Main.NavetteCollecte.LayerDestination.MissionNumber);
+            int indice = Variable.vVariableAna.IndexOf(Main.NavetteCollecte.LayerDestination.MissionNumber);
             Variable.vVariableAna[indice].WriteVar(request.MissionNumber);
 
             indice = Variable.vVariableAna.IndexOf(Main.NavetteCollecte.LayerDestination.SorterInputConveyorNumber);
@@ -33,6 +23,9 @@ namespace Web_Service_LIMA
 
             indice = Variable.vVariableAna.IndexOf(Main.NavetteCollecte.LayerDestination.TapingOutputConveyorNumber);
             Variable.vVariableAna[indice].WriteVar(request.TapingOutputConveyorNumber);
+
+            indice = Variable.vVariableBool.IndexOf(Main.NavetteCollecte.LayerDestination.ReceiveCom);
+            Variable.vVariableBool[indice].WriteVar(true);
         }
 
     }

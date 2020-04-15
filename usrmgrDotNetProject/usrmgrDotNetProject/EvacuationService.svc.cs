@@ -15,23 +15,17 @@ namespace Web_Service_LIMA
     {
         public void LayerEvacuation(PostTapingEvacuationShuttleLayerEvacuationRequest request)
         {
-            /*
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Evacuation -- MissionNumber : " + request.MissionNumber);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Evacuation -- LayerDestination : " + request.LayerDestination);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Evacuation -- SorterOutputConveyorNumber : " + request.SorterOutputConveyorNumber);
-            */
-
-            int indice = Variable.vVariableBool.IndexOf(Main.NavetteEvacuation.LayerEvacuation.ReceiveCom);
-            Variable.vVariableBool[indice].WriteVar(true);
+            int indice = Variable.vVariableAna.IndexOf(Main.NavetteEvacuation.LayerEvacuation.LayerDestination);
+            Variable.vVariableAna[indice].WriteVar(request.LayerDestination);
 
             indice = Variable.vVariableAna.IndexOf(Main.NavetteEvacuation.LayerEvacuation.MissionNumber);
             Variable.vVariableAna[indice].WriteVar(request.MissionNumber);
 
-            indice = Variable.vVariableAna.IndexOf(Main.NavetteEvacuation.LayerEvacuation.LayerDestination);
-            Variable.vVariableAna[indice].WriteVar(request.LayerDestination);
-
             indice = Variable.vVariableAna.IndexOf(Main.NavetteEvacuation.LayerEvacuation.SorterOutputConveyorNumber);
             Variable.vVariableAna[indice].WriteVar(request.SorterOutputConveyorNumber);
+
+            indice = Variable.vVariableBool.IndexOf(Main.NavetteEvacuation.LayerEvacuation.ReceiveCom);
+            Variable.vVariableBool[indice].WriteVar(true);
         }
     }
 }

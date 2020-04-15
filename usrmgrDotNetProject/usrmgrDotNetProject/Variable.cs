@@ -62,6 +62,8 @@ namespace usrmgrDotNetProject
             public sLayerDestination LayerDestination;
             public sMissionStatus MissionStatus;
             public sReportRunningMode ReportRunningMode;
+            public TypeBool ErreurCom;
+            public TypeAna Test;
         }
 
         public struct sNavetteEvacuation
@@ -69,6 +71,7 @@ namespace usrmgrDotNetProject
             public sLayerEvacuation LayerEvacuation;
             public sMissionStatus MissionStatus;
             public sReportRunningMode ReportRunningMode;
+            public TypeBool ErreurCom;
         }
 
         public Variable()
