@@ -15,9 +15,9 @@ namespace Web_Service_LIMA
     {
         public void LayerDestination(PostTapingCollectShuttleLayerDestinationRequest request)
         {
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "MissionNumber : " + request.MissionNumber);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "SorterInputConveyorNumber : " + request.SorterInputConveyorNumber);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "TapingOutputConveyorNumber : " + request.TapingOutputConveyorNumber);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collect -- MissionNumber : " + request.MissionNumber);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collect -- SorterInputConveyorNumber : " + request.SorterInputConveyorNumber);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Collect -- TapingOutputConveyorNumber : " + request.TapingOutputConveyorNumber);
         }
     }
 }

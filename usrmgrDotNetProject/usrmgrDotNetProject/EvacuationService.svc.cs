@@ -15,9 +15,9 @@ namespace Web_Service_LIMA
     {
         public void LayerEvacuation(PostTapingEvacuationShuttleLayerEvacuationRequest request)
         {
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "MissionNumber : " + request.MissionNumber);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "LayerDestination : " + request.LayerDestination);
-            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "SorterOutputConveyorNumber : " + request.SorterOutputConveyorNumber);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Evacuation -- MissionNumber : " + request.MissionNumber);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Evacuation -- LayerDestination : " + request.LayerDestination);
+            SvMgrAPI.LogMessage(SvMgrEnums.LogMessageLevel.Info, "Evacuation -- SorterOutputConveyorNumber : " + request.SorterOutputConveyorNumber);
         }
     }
 }
